@@ -15,20 +15,47 @@ public class DecitionWindow : EditorWindow
     //window code
    void OnGUI()
    {
-        GUILayout.Label("Decition", EditorStyles.boldLabel);
-
-        if(GUILayout.Button("Create Node"))
+        if (hasEveryonetheComponent()) //if every selected object has the DecitionManager then we can add nodes
         {
-            Debug.Log("Node created");
+            GUILayout.Label("DecitionTree", EditorStyles.boldLabel);
+            //show the nodes
+
+
+            //button to add nodes
+
+        }
+        else
+        {
+            GUILayout.Label("There is no decition manager", EditorStyles.boldLabel);
+            if (GUILayout.Button("addDecitionManager"))
+            {
+                addDecitionManager();
+            }
+        }
+   }
+    private void addDecitionManager()
+    {
+        foreach(GameObject obj in Selection.gameObjects)
+        {
+            if (obj.GetComponent<DecitionManager>() == null)
+            {
+                obj.AddComponent<DecitionManager>();
+            }
+        }
+    }
+    private bool hasEveryonetheComponent()
+    {
+        bool result=true;
+        int i = 0;
+        while( i < Selection.gameObjects.Length && result)
+        {
+            result = Selection.gameObjects[i].GetComponent<DecitionManager>() != null &&
+                Selection.gameObjects[i].GetComponent<DecitionManager>().enabled;
+            i++;
         }
 
-   }
-
-    void AddNode()
-    {
-        openNodes.Add(new Node());
+        return result;
     }
-
 
 }
 
@@ -36,6 +63,7 @@ public class Node: MonoBehaviour
 {
     
     MonoBehaviour myAction;
+    int level;
     public Node()
     {
 
