@@ -5,35 +5,50 @@ using UnityEditor;
 
 public class DecitionWindow : EditorWindow
 {
-    List<Node>openNodes;
-    [MenuItem("Window/TrAIl/DecitionTree")]
+    public Texture sucess;
+    public Texture dfault;
+    public Texture failure;
+
+   
+    [MenuItem("Trails/DecitionTree")]
     public static void ShowWindow()
     {
-        GetWindow<DecitionWindow>("DecitionTree");
+        GetWindow<DecitionWindow>("GRid");
     }
+    void OnEnable()
+    {
 
+    }
+    
     //window code
-   void OnGUI()
-   {
+    void OnGUI()
+    {
+
         if (hasEveryonetheComponent()) //if every selected object has the DecitionManager then we can add nodes
         {
             GUILayout.Label("DecitionTree", EditorStyles.boldLabel);
             //show the nodes
 
 
-            //button to add nodes
 
+
+            //button to add nodes
+            if (GUILayout.Button("addNode"))
+            {
+
+            }
         }
         else
         {
-            GUILayout.Label("There is no decition manager", EditorStyles.boldLabel);
+            GUILayout.Label("There is no decition manager");
             if (GUILayout.Button("addDecitionManager"))
             {
                 addDecitionManager();
             }
         }
-   }
-    private void addDecitionManager()
+    }
+    
+    void addDecitionManager()
     {
         foreach(GameObject obj in Selection.gameObjects)
         {
@@ -43,7 +58,9 @@ public class DecitionWindow : EditorWindow
             }
         }
     }
-    private bool hasEveryonetheComponent()
+
+
+    bool hasEveryonetheComponent()
     {
         bool result=true;
         int i = 0;
