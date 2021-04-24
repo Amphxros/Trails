@@ -6,29 +6,22 @@ namespace Trail
 {
     public class Node : MonoBehaviour
     {
-        enum State { Undefined,Current, Sucess, Failure};
-
-        State mState;
-        // Start is called before the first frame update
-        void Start()
+       public enum NodeType { NODE, SELECTOR, SEQUENCE};
+       // MonoBehaviour mComponent;
+        
+        public Node()
         {
-            mState = State.Undefined;
+            mNode = NodeType.NODE;
+            next = null;
         }
-
-        // Update is called once per frame
-        void Update()
+        
+        public Node( NodeType node)
         {
-            switch (mState)
-            {
-                case State.Undefined:
-                    break;
-                case State.Current:
-                    break;
-                case State.Sucess:
-                    break;
-                case State.Failure:
-                    break;
-            }
+            mNode = node;
         }
+        NodeType mNode;
+        Node[] next;
+
+
     }
 }
