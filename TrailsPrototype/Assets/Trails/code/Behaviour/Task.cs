@@ -7,6 +7,7 @@ public class Task : MonoBehaviour
     public List<Task> children;
     protected bool result = false;
     protected bool isFinished = false;
+    string info = "";
 
     public virtual void setResult(bool res) { 
         result = res;
@@ -29,4 +30,16 @@ public class Task : MonoBehaviour
     {
         yield return StartCoroutine(Run());
     }
+
+
+    public void setInfo(string msg)
+    {
+        info = msg;
+    }
+
+    public string getInfo()
+    {
+        return info;
+    }
+
 }
