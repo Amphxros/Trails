@@ -2,17 +2,46 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Parallel : MonoBehaviour
-{
-    // Start is called before the first frame update
-    void Start()
+namespace Trails{
+    public class Parallel : Composite
     {
-        
+    private bool mFailOnAny_;
+    private bool mSucceedOnAny_;
+    private bool mFailOnTie_;
+
+    public bool FailOnAny{
+        get{
+            return mFailOnAny_;
+        }
+        set{
+            mFailOnAny_=value;
+        }
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+    public bool SucceedOnAny{
+        get{
+            return mSucceedOnAny_;
+        }
+        set{
+            mSucceedOnAny_=value;
+        }
+    }
+    public bool FailOnTie{
+			get
+			{
+				return mFailOnTie_;
+			}
+			set
+			{
+				mFailOnTie_ = value;
+			}
+	}
+
+    public Parallel(){
+        mFailOnAny_=true;
+        mSucceedOnAny_=false;
+        mFailOnTie_=true;
+    }
+
     }
 }

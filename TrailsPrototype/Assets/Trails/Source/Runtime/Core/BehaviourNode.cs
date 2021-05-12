@@ -13,6 +13,8 @@ namespace Trails
         private string mName_;
         private float mWeight_;
         //mas variables aqui
+        private List<Constraint> mConstraints_;
+
 
         public Vector2 Position
         {
@@ -69,5 +71,20 @@ namespace Trails
         {
             get { return mUniqueID_; }
         }
+
+        public BehaviourNode(){
+
+        }
+	    public virtual void OnBeforeSerialize(BTAsset btAsset)
+		{
+		
+        }
+        public virtual void OnAfterDeserialize(BTAsset btAsset)
+		{
+        }
+
+        public virtual void OnStart(AIAgent agent)
+		{
+		}
     }
 }

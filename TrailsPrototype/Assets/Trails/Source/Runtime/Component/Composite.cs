@@ -6,16 +6,16 @@ namespace Trails
 {
     public class Composite : MonoBehaviour
     {
-        // Start is called before the first frame update
-        void Start()
-        {
+       protected List<BehaviourNode> mChildren_;
 
+       public int Count{
+        get{
+            return mChildren_.Count;
         }
+       }
 
-        // Update is called once per frame
-        void Update()
-        {
-
-        }
+       public Composite(){
+           mChildren_= new List<BehaviourNode>();
+       }
     }
 }
