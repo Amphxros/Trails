@@ -2,7 +2,8 @@
 
 namespace Trails.Serialization
 {
-	public class BTHideInInspectorAttribute : Attribute
+	// Hides the element form the inspector
+		public class BTHideInInspectorAttribute : Attribute
 	{
 	}
 }

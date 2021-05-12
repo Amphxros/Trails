@@ -2,17 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+namespace Trails{
 public class Root : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public string Tittle= "Root";
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+}
 }

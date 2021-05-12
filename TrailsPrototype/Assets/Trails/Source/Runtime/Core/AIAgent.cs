@@ -8,9 +8,16 @@ namespace Trails{
     {
         private BTAsset mBehaviourTree_;
         private BehaviourTree mBTInstance_;
-        
+
         private GameObject mBody_;
         
+
+        public GameObject Body{
+            get{
+                return mBody_!=null ? mBody_:gameObject;
+            }
+        }
+
         // Start is called before the first frame update
         void Start()
         {

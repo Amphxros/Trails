@@ -80,11 +80,12 @@ namespace Trails.Serialization
 				throw new ArgumentException();
 			}
 
-#if !UNITY3D
+			#if !UNITY3D
 			return provider.IsDefined(typeof(XmlIgnoreAttribute), true);
-#else
+			
+			#else
 			return false;
-#endif
+			#endif
 		}
 
 		#endregion Methods
