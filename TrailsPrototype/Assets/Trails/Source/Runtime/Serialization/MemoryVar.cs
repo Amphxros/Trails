@@ -1,3 +1,4 @@
+﻿
 #region License
 /*---------------------------------------------------------------------------------*\
 
@@ -27,25 +28,25 @@
 
 \*---------------------------------------------------------------------------------*/
 #endregion License
-using System;
-namespace  Trails.Serialization
+
+
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+namespace Trails.Serialization{
+public class MemoryVar : MonoBehaviour
 {
-	/** Specifies that members of this class that should be serialized must be explicitly specified.
-	 * Classes that this attribute is applied to need to explicitly
-	 * declare every member that should be serialized with the JsonMemberAttribute.
-	 * \see JsonMemberAttribute
-	 */
-	public class BTOptInAttribute : Attribute
-	{
-		public BTOptInAttribute ()
-		{
-			
-		}
-	}
+    // Start is called before the first frame update
+    void Start()
+    {
+        
+    }
 
-	public class BTUseTypeHintAttribute : Attribute
-	{
-		public BTUseTypeHintAttribute () {}
-	}
+    // Update is called once per frame
+    void Update()
+    {
+        
+    }
 }
-
+}

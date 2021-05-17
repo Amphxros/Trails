@@ -5,7 +5,6 @@ namespace Trails
     public abstract class Constraint
     {
         private bool mIsExpanded_ = true;
-
         private bool mInvertResult = false;
       
         public bool IsExpanded
@@ -32,16 +31,17 @@ namespace Trails
             }
         }
 
-   //     public virtual void OnBeforeSerialize(BTAsset btAsset) { }
-   //     public virtual void OnAfterDeserialize(BTAsset btAsset) { }
-   //
-   //     public bool OnExecute(AIAgent agent)
-   //     {
-   //         bool result = Evaluate(agent);
-   //         return InvertResult ? !result : result;
-   //     }
-   //
-   //     protected abstract bool Evaluate(AIAgent agent);
+        public virtual void OnBeforeSerialize(BTAsset btAsset) { }
+        public virtual void OnAfterDeserialize(BTAsset btAsset) { }
+   
+        public bool OnExecute(AIAgent agent)
+        {
+            bool result = Evaluate(agent);
+            return InvertResult ? !result : result;
+        }
+   
+
+        protected abstract bool Evaluate(AIAgent agent);
 
     }
 }
