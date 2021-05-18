@@ -151,7 +151,7 @@ namespace Trails
         mStatus=BehaviourNodeStatus.None;
         }
 
-        public BehaviourNodeStatus Run(AIAgent agent){
+        public virtual BehaviourNodeStatus Run(AIAgent agent){
             if(mStatus!=BehaviourNodeStatus.Running){
                 OnEnter(agent);
                 foreach(var s in mServices_){
@@ -179,12 +179,14 @@ namespace Trails
             return mStatus;
         }
 
-	    protected abstract BehaviourNodeStatus OnExecute(AIAgent agent);
-        protected virtual void OnEnter(AIAgent agent)
+	    public virtual BehaviourNodeStatus OnExecute(AIAgent agent){
+            return BehaviourNodeStatus.None;
+        }
+        public virtual void OnEnter(AIAgent agent)
 		{
 		}
 
-		protected virtual void OnExit(AIAgent agent)
+		public virtual void OnExit(AIAgent agent)
 		{
 		}
         private bool CheckConstraints(AIAgent agent)

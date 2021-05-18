@@ -16,11 +16,11 @@ public class Wait : Action
     public Wait(){
 		mDuration_ = new MemoryVar();
 	}
-    protected override void OnEnter(AIAgent agent){
+    public override void OnEnter(AIAgent agent){
 			m_startTime = Time.time;
 	}
 
-    protected override BehaviourNodeStatus OnExecute(AIAgent agent){
+    public override BehaviourNodeStatus OnExecute(AIAgent agent){
 			float duration =0;// mDuration_.AsFloat.HasValue ? mDuration_.AsFloat.Value : m_duration.Evaluate<float>(agent.Blackboard, 0.0f);
 
 			if(Time.time < m_startTime + duration){

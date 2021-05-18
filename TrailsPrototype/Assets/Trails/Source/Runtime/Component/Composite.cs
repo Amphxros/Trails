@@ -34,16 +34,17 @@ namespace Trails
             }
         }
 
-        protected void OnEnter(AIAgent agent)
+        public override void OnEnter(AIAgent agent)
         {
             base.OnEnter(agent);
             foreach (BehaviourNode b in mChildren_)
             {
                 b.OnEnter(agent);
             }
+
         }
 
-        protected BehaviourNodeStatus OnExecute(AIAgent agent) {
+        public override BehaviourNodeStatus OnExecute(AIAgent agent) {
             return BehaviourNodeStatus.None;
         }
 
@@ -68,7 +69,7 @@ namespace Trails
         public void InsertChild(int index, BehaviourNode child)
         {
             if (child != null)
-                mChildren_.Insert(child);
+                mChildren_.Insert(index,child);
         }
 
         public void AddChild(BehaviourNode child)
@@ -99,8 +100,8 @@ namespace Trails
             if (index > 0 && index < mChildren_.Count)
             {
                 var temp = mChildren_[index];
-                mChildren[index] = mChildren[index + 1];
-                mChildren[index + 1] = temp;
+                mChildren_[index] = mChildren_[index + 1];
+                mChildren_[index + 1] = temp;
             }
         }
 
@@ -109,8 +110,8 @@ namespace Trails
             if (index >= 0 && index < mChildren_.Count - 1)
             {
                 var temp = mChildren_[index];
-                mChildren[index] = mChildren[index - 1];
-                mChildren[index - 1] = temp;
+                mChildren_[index] = mChildren_[index - 1];
+                mChildren_[index - 1] = temp;
             }
         }
 

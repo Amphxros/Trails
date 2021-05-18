@@ -15,12 +15,13 @@ namespace Trails
             }
         }
 
-        protected void OnEnter(AIAgent agent)
+        public override void OnEnter(AIAgent agent)
         {
             index = 0;
         }
 
-        protected BehaviourNodeStatus OnExecute(AIAgent agent)
+
+        public override BehaviourNodeStatus OnExecute(AIAgent agent)
         {
             BehaviourNodeStatus stat = BehaviourNodeStatus.Success;
             bool exit = false;  // Exit condition of the sequence
