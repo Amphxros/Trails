@@ -3,7 +3,10 @@ guid: e9261ee22df4587449190fca6971a7b9
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - m_ViewDataDictionary: {instanceID: 0}
+  - mGrid_: {fileID: 2800000, guid: 4ab1df7fc134e8b4c86823e805911657, type: 3}
+  - mBTAsset_: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

@@ -9,7 +9,7 @@ namespace Trails.Editor{
 public class BehaviourTreeEditor : EditorWindow {
    
    [SerializeField]
-   private Texture mGrid_;
+   private Texture mTextureGrid_;
    
    [SerializeField]
    private BTAsset mBTAsset_;
@@ -18,18 +18,31 @@ public class BehaviourTreeEditor : EditorWindow {
    // private BTNavigationHistory mNavigationHistory_;
 
 
-        //private BTEditorGrid m_grid;
-		//private BTEditorGraph m_graph;
-		//private BTEditorCanvas m_canvas;
+    private BTEditorGrid mGrid_;
+	 private BTEditorGraph mGraph_;
+	private BTEditorCanvas mCanvas_;
 
 
-private bool isDisposed_;
+    private bool isDisposed_;
 
      private void OnEnable() {
-        if(mGrid_==null){
-            mGrid_= Resources.Load<Texture>("Trails/EditorGUI/background");
+        if(mTextureGrid_==null){
+            mTextureGrid_= Resources.Load<Texture>("Trails/EditorGUI/background");
 
-        }    
+        }
+
+        if(mCanvas_==null){
+
+        }
+        
+        if(mGrid_==null){
+
+        }
+        
+        if(mGraph_==null){
+            
+        }
+
 
     }
     

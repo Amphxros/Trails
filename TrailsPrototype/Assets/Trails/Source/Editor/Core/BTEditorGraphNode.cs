@@ -1,13 +1,13 @@
 ﻿
-//using System.Collections;
-//using System.Collections.Generic;
-//using UnityEngine;
-//using UnityEditor;
-//using Trails;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEditor;
+using Trails;
 
-//namespace Trails.Editor{
+namespace Trails.Editor{
     
-//    public class BTEditorGraphNode : ScriptableObject {
+    public class BTEditorGraphNode : ScriptableObject {
 //    private const int DRAG_MOUSE_BUTTON = 0;
 //	private const int SELECT_MOUSE_BUTTON = 0;
 //	private const int CONTEXT_MOUSE_BUTTON = 1;
@@ -594,5 +594,5 @@
 
 //			return null;
 //		}
-//	}
-//}
+	}
+}
