@@ -6,7 +6,7 @@ using UnityEngine.Events;
 namespace Trails{
     public class AIAgent : MonoBehaviour
     {
-        private BTAsset mBehaviourTree_;
+        public BTAsset mBehaviourTree_;
         private BehaviourTree mBTInstance_;
 
         private GameObject mBody_;

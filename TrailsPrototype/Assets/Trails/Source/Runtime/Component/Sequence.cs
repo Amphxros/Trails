@@ -2,17 +2,37 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Sequence : MonoBehaviour
+namespace Trails
 {
-    // Start is called before the first frame update
-    void Start()
+    public class Sequence : Composite
     {
-        
-    }
+        protected int index;
+        public override string Title
+        {
+            get
+            {
+                return "Sequence";
+            }
+        }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        protected void OnEnter(AIAgent agent)
+        {
+            index = 0;
+        }
+
+        protected BehaviourNodeStatus OnExecute(AIAgent agent)
+        {
+            BehaviourNodeStatus stat = BehaviourNodeStatus.Success;
+            bool exit = false;  // Exit condition of the sequence
+
+            while (!exit && index < mChildren_.Count)
+            {
+                stat = mChildren_[index].Run(agent);
+                exit = (stat != BehaviourNodeStatus.Success);
+                index++;
+            }
+            return stat;
+        }
+
     }
 }
