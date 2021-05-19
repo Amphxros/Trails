@@ -13,13 +13,13 @@ namespace Trails.Editor{
         private Stack<BTEditorGraphNode> mRootStack_;
 
         private bool mDrawSelectionBox_;
-        private bool mBehavivourTreeIsReadOnly_=false;
+        private bool mBehaviourTreeIsReadOnly_=false;
         private bool mCanBeginBoxSelection_;
         private Vector2 mSelectionBoxPos_;
 
         public bool ReadOnly{
             get{
-            return mBehavivourTreeIsReadOnly_;
+            return mBehaviourTreeIsReadOnly_;
             }
         }
 
@@ -31,16 +31,53 @@ namespace Trails.Editor{
 
 		public Rect? SelectionBox { get; set; }
 
+        private BTEditorGraphNode WorkingRoot
+		{
+			get
+			{
+				return mRootStack_.Peek();
+			}
+		}
+
         private void OnCreated(){
             mMasterRoot_=null;
             mRootStack_=new Stack<BTEditorGraphNode>();
             mDrawSelectionBox_= false;
-            mBehavivourTreeIsReadOnly_=false;
+            mBehaviourTreeIsReadOnly_=false;
         }
 
          private void OnDestroy() {
-         
+            BTEditorGraphNode.DestroyImmediate(mMasterRoot_);
+            mMasterRoot_=null;
+            mRootStack_.Clear();
         }
+        public void SetBehaviourTree(BehaviourTree bT){
+            if(mMasterRoot_!=null){
+
+            }
+            mBehaviourTreeIsReadOnly_=bT.isReadOnly;
+            // mMasterRoot_ = BTEditorGraphNode.CreateRoot(this, behaviourTree.Root);
+            mRootStack_.Push(mMasterRoot_);
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+	    public bool IsRoot(BTEditorGraphNode node)
+		{
+			return node == WorkingRoot;
+		}
+
+
 
     }
 }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 namespace Trails{
-public class Root : MonoBehaviour
+public class Root : BehaviourNode
 {
     public string Tittle= "Root";
 

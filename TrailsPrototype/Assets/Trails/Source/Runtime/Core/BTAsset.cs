@@ -43,38 +43,52 @@ namespace Trails
             }
         }
 
-//#if UNITY_EDITOR
-//		private void OnEnable()
-//		{
-//			if(Mathf.Approximately(mCanvasArea_.width, 0) || Mathf.Approximately(mCanvasArea_.height, 0))
-//			{
-//				mCanvasArea_ = new Rect(-DEFAULT_CANVAS_SIZE.x / 2, -DEFAULT_CANVAS_SIZE.y / 2, DEFAULT_CANVAS_SIZE.x, DEFAULT_CANVAS_SIZE.y);
-//			}
-//			if(mSubtrees_ == null)
-//			{
-//				mSubtrees_ = new List<AssetIDPair>();
-//			}
-//		}
-//
-//        public void Serialize()
-//		{
-//			if(mEditModeTree_ != null)
-//			{
-//				mEditModeTree_.Root.OnBeforeSerialize(this);
-//
+#if UNITY_EDITOR
+		private void OnEnable()
+		{
+			if(Mathf.Approximately(mCanvasArea_.width, 0) || Mathf.Approximately(mCanvasArea_.height, 0))
+			{
+				mCanvasArea_ = new Rect(-DEFAULT_CANVAS_SIZE.x / 2, -DEFAULT_CANVAS_SIZE.y / 2, DEFAULT_CANVAS_SIZE.x, DEFAULT_CANVAS_SIZE.y);
+			}
+			if(mSubtrees_ == null)
+			{
+				mSubtrees_ = new List<AssetIDPair>();
+			}
+		}
+        public void Serialize()
+		{
+			if(mEditModeTree_ != null)
+			{
+			// mEditModeTree_.Root.OnBeforeSerialize(this);
+
 //				string serializedData = BTUtils.SerializeTree(mEditModeTree_);
 //				if(serializedData != null)
 //				{
 //					mSerializedData_ = serializedData;
 //				}
-//			}
-//		}
-//        
-//        public void Dispose()
-//		{
-//			m_editModeTree = null;
-//		}
-//#endif
+			}
+		}
+
+        	public BehaviourTree GetEditModeTree()
+		{
+			if(mEditModeTree_ == null)
+			{
+				mEditModeTree_ = BTUtils.DeserializeTree(mSerializedData_);
+				if(mEditModeTree_ != null)
+				{
+					mEditModeTree_.Root.OnAfterDeserialize(this);
+					mEditModeTree_.isReadOnly = false;
+				}
+			}
+
+			return mEditModeTree_;
+		}
+        
+        public void Dispose()
+		{
+			mEditModeTree_ = null;
+		}
+#endif
 
     }
 }
