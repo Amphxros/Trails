@@ -1,12 +1,12 @@
 using UnityEngine;
 using System;
-using Brainiac;
+using Trails;
 
 [AddNodeMenu("Decorator/{0}")]
 public class {0} : Decorator
-{{
+{
 	protected override BehaviourNodeStatus OnExecute(AIAgent agent)
-	{{
+	{
 		throw new NotImplementedException();
-	}}
-}}
+	}
+}

@@ -5,7 +5,6 @@ using Trails;
 using UnityEditor;
 
 namespace Trails.Editor{
-
 public class BehaviourTreeEditor : EditorWindow {
    
    [SerializeField]
@@ -105,8 +104,22 @@ public class BehaviourTreeEditor : EditorWindow {
 			
 	}
     public void CreateNewBehaviourTree(){
-    
+        string path="";
+        if(!string.IsNullOrEmpty(path)){
+            BTAsset asset= ScriptableObject.CreateInstance<BTAsset>();
+            AssetDatabase.CreateAsset(asset,path);
+            AssetDatabase.Refresh();
+
+        }
     }
     
+	public void OnRepaint(){
+		Repaint();
+	}
+
+    public static void Open(BTAsset behaviourTree){
+		var window = EditorWindow.GetWindow<BehaviourTreeEditor>("Trails");
+		window.SetBTAsset(behaviourTree, true);
+	}
     }
 }
