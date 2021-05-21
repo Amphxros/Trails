@@ -7,7 +7,7 @@ namespace Trails{
     public class AIAgent : MonoBehaviour
     {
         public BTAsset mBehaviourTree_;
-        private BehaviourTree mBTInstance_;
+        public BehaviourTree mBTInstance_;
 
         private GameObject mBody_;
         
@@ -17,6 +17,8 @@ namespace Trails{
                 return mBody_!=null ? mBody_:gameObject;
             }
         }
+
+        
 
         // Start is called before the first frame update
         void Start()

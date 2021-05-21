@@ -2,7 +2,7 @@
 using UnityEditor;
 using UnityEngine.Events;
 
-namespace Trails.Editor{
+namespace TrailsEditor{
 public class BTEditorCanvas 
 {
     private const int DRAG_MOUSE_BUTTON = 2;

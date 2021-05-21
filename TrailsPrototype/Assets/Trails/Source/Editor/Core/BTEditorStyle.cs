@@ -1,7 +1,7 @@
 ﻿using UnityEditor;
 using UnityEngine;
 
-namespace Trails.Editor{
+namespace TrailsEditor{
     public static class BTEditorStyle{
         private static GUISkin mEditorSkin_;
         private static Texture mArrowUP_;  

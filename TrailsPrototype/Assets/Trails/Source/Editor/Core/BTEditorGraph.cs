@@ -4,7 +4,7 @@ using UnityEngine;
 using Trails;
 using UnityEditor;
 
-namespace Trails.Editor{
+namespace TrailsEditor{
     public class BTEditorGraph : ScriptableObject{
         private const int SELECT_MOUSE_BUTTON = 0;
 		private const int CONTEXT_MOUSE_BUTTON = 1;
@@ -49,7 +49,8 @@ namespace Trails.Editor{
          private void OnDestroy() {
             BTEditorGraphNode.DestroyImmediate(mMasterRoot_);
             mMasterRoot_=null;
-            mRootStack_.Clear();
+            if(mRootStack_!=null)
+                mRootStack_.Clear();
         }
         public void SetBehaviourTree(BehaviourTree bT){
             if(mMasterRoot_!=null){

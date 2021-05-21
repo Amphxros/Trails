@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-namespace Trails.Editor{
+namespace TrailsEditor{
     public class BTEditorGrid 
     {
         private Texture mTexture_;

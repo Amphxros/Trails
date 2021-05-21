@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEditor;
 using Trails;
 
-namespace Trails.Editor{
+namespace TrailsEditor{
     
     public class BTEditorGraphNode : ScriptableObject {
     private const int DRAG_MOUSE_BUTTON = 0;

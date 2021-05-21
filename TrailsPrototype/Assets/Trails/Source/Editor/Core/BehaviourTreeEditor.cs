@@ -4,7 +4,7 @@ using UnityEngine;
 using Trails;
 using UnityEditor;
 
-namespace Trails.Editor{
+namespace TrailsEditor{
 public class BehaviourTreeEditor : EditorWindow {
    
    [SerializeField]

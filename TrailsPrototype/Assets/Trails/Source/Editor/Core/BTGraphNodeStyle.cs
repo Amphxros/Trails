@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Trails.Editor{
+namespace TrailsEditor{
 public class BTGraphNodeStyle
 {
     // NODES CONSTS
@@ -33,8 +33,9 @@ public class BTGraphNodeStyle
     private GUIStyle mRunningSelected_;
 
     // sucess status
-	private GUIStyle mSuccessNormal_;
+    private GUIStyle mSuccessNormal_;
 	private GUIStyle mSuccessSelected_;
+
 
     public BTGraphNodeStyle(){
         
