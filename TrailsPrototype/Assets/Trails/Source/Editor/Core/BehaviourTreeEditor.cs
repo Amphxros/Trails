@@ -27,15 +27,15 @@ public class BehaviourTreeEditor : EditorWindow {
     private void OnEnable() {
         if(mTextureGrid_==null){
             mTextureGrid_= Resources.Load<Texture>("Trails/EditorGUI/background");
-
         }
 
         if(mCanvas_==null){
-
+        mCanvas_= new BTEditorCanvas();
+        BTEditorCanvas.Current=mCanvas_;
         }
         
         if(mGrid_==null){
-
+            mGrid_= new BTEditorGrid(mTextureGrid_);
         }
         
         if(mGraph_==null){
@@ -45,6 +45,31 @@ public class BehaviourTreeEditor : EditorWindow {
 
 
     }
+	private void OnGUI()
+		{
+			if(mBTAsset_ != null)
+			{
+				Rect navHistoryRect = new Rect(0.0f, 0.0f, position.width, 20.0f);
+				Rect optionsRect = new Rect(position.width - 20.0f, 0.0f, 20.0f, 20.0f);
+				Rect footerRect = new Rect(0.0f, position.height - 18.0f, position.width, 20.0f);
+				Rect canvasRect = new Rect(0.0f, navHistoryRect.yMax, position.width, position.height - (footerRect.height + navHistoryRect.height));
+				
+				// BTEditorStyle.EnsureStyle();
+				mGrid_.DrawGUI(position.size);
+				// mGraph_.DrawGUI(canvasRect);
+				// mCanvas_.HandleEvents(canvasRect, position.size);
+				// DrawNavigationHistory(navHistoryRect);
+				// DrawFooter(footerRect);
+				// DrawOptions(optionsRect);
+
+				if(mCanvas_.IsDebuging)
+				{
+					OnRepaint();
+				}
+			}
+		}
+
+
     
     private void OnDisable(){
 			Dispose();

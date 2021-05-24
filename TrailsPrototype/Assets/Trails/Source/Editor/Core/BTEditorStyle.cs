@@ -7,7 +7,11 @@ namespace TrailsEditor{
         private static Texture mArrowUP_;  
         private static Texture mArrowDOWN_;
         private static Texture mOptionsIcon_;
+
+        enum NodeStyles{CompositeStyle, DecoratorStyle, ActionStyle,NodeGroup}
+        private static BTGraphNodeStyle [] mStyles_;
     
+       
 
     
 
