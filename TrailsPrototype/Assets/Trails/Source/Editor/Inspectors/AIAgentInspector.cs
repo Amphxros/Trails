@@ -5,10 +5,11 @@ using UnityEditor;
 
 namespace TrailsEditor{
 
-[CustomEditor(typeof(AIAgent))]
-public class AIAgentInspector : Editor {
-    public override void OnInspectorGUI() {
-             DrawDefaultInspector();
+	[CustomEditor(typeof(AIAgent))]	
+	public class AIAgentInspector : Editor {
+    	public override void OnInspectorGUI() {
+
+			DrawDefaultInspector();
 
 			AIAgent agent = (AIAgent)target;
 			BTAsset btAsset = agent.mBehaviourTree_;
@@ -19,7 +20,7 @@ public class AIAgentInspector : Editor {
 			{
 				if(GUILayout.Button("Preview", GUILayout.Height(24.0f)))
 				{
-					// BehaviourTreeEditor.OpenDebug(btAsset, btInstance);
+					// si metemos debugeado que sea aqui
 				}
 			}
 			else
@@ -31,8 +32,6 @@ public class AIAgentInspector : Editor {
 			}
 			GUI.enabled = true;
         
-    }
-    
-}
-
+   	 	}
+	}
 }
