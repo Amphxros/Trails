@@ -28,6 +28,7 @@ namespace Trails
             mConstraints_= new List<Constraint>();
             mServices_= new List<Service>();
         }
+        public BehaviourNodeStatus get(){ return mStatus; }
 
 #if UNITY_EDITOR
 		/// <summary>
