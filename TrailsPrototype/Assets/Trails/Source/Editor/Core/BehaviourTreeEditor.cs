@@ -57,7 +57,7 @@ public class BehaviourTreeEditor : EditorWindow {
 				// BTEditorStyle.EnsureStyle();
 				mGrid_.DrawGUI(position.size);
 				// mGraph_.DrawGUI(canvasRect);
-				// mCanvas_.HandleEvents(canvasRect, position.size);
+				mCanvas_.HandleEvents(canvasRect, position.size);
 				// DrawNavigationHistory(navHistoryRect);
 				// DrawFooter(footerRect);
 				// DrawOptions(optionsRect);
