@@ -36,6 +36,12 @@ public class BTGraphNodeStyle
     private GUIStyle mSuccessNormal_;
 	private GUIStyle mSuccessSelected_;
 
+    enum Styles{standardNormal, standardSelected,
+                failNormal, failSelected,
+                runningNormal, runningSelected,
+                sucessNormal, successSelected};
+    private string [] mStylesNames_;
+
 
     public BTGraphNodeStyle(){
         

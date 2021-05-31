@@ -26,11 +26,7 @@ namespace TrailsEditor{
     
         private static GUIStyle mArrowUPButton_;
         private static GUIStyle mArrowDownButton_;
-    
-        private static GUIStyle mBreadcrumbLeftStyle_;
-        private static GUIStyle mBreadcrumbLeftActiveStyle_;
-		private static GUIStyle mBreadcrumbMidStyle_;
-		private static GUIStyle mBreadcrumbMidActiveStyle_;
+
 		private static GUIStyle mSeparatorStyle_;
 		private static GUIStyle mRegionBackground_;
 
@@ -83,12 +79,107 @@ namespace TrailsEditor{
 			}
 		}
         
+        public static GUIStyle ListBackground
+		{
+			get
+			{
+				return mListBackGround_;
+			}
+		}
 
+        public static GUIStyle ListButton
+		{
+			get
+			{
+				return mListButton_;
+			}
+		}
 
+        public static GUIStyle mListDragHandle{
+            get{
+                return mListDragHandle_;
+            }
+        }
+        public static  GUIStyle ArrowUPButton{
+            get{
+                return mArrowUPButton_;
+            }
+        }
+        public static  GUIStyle ArrowDOWNButton {
+            get{
+                return mArrowDownButton_;
+            }
+        }
+        public static  GUIStyle EditorFooter
+        {
+            get{
+                return mEditorFooter_;
+            }
+        }
+        
+        public static  GUIStyle SeparatorStyle
+        {
+            get{
+                return mSeparatorStyle_;
+            }
+        }
 
+        public static  GUIStyle RegionBG
+        {
+            get{
+                return mRegionBackground_;
+            }
+        }
 
+        public static BTEditorLayout TreeLayout{
+            get{
+                return null;
+            }
+            set{
+               
+                // EditorPrefs.SetInt("Trails.Editor.TreeLayout", (int)value);
+            }
+        }
+        
+        public static void EnsureStyle()
+		{
+			LoadGUISkin();
+			LoadTextures();
+			CreateNodeStyles();
+			CreateGUIStyles();
+		}
+
+        private static void LoadGUISkin()
+		{
+            if(mEditorSkin_!=null){
+                return;
+            }
+            else{
+            mEditorSkin_= Resources.Load<GUISkin>("Trails/EditorGUI/editor_style");
+            }
+        }
     
+        private static void LoadTextures()
+		{
+            if(mArrowUP_==null){
 
+            }
+            if(mArrowDOWN_==null){
+
+            }
+            if(mOptionsIcon_==null){
+                
+            }
+
+        }
+        private static void CreateNodeStyles()
+		{
+
+        }
+        private static void CreateGUIStyles()
+		{
+
+        }
 
     }
 }
