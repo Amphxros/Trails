@@ -263,19 +263,31 @@ namespace TrailsEditor{
 				else if(m_node is Decorator)
 				{
 					Decorator decorator = m_node as Decorator;
-					decorator.SetChildren(child.Node);
+					decorator.SetChildren(null);
 				}
 			}
 		}
 
 		private void DestroyChildren()
 		{
-			
+			for(int i=0;i<m_children.Count;i++){
+				
+			}
+			if(m_node is Composite){
+				//(Composite)m_node.RemoveAllChildren();
+			}
+			else if(m_node is Decorator){
+				//(Decorator)m_node.SetChildren(null);
+			}
+	
 		}
 
 		private void OnDestroy()
 		{
-			
+			// m_graph.OnNodeDeselect(this);
+			for(int i=0;i<m_children.Count;i++){
+
+			}
 		}
 
 		private static BTEditorGraphNode CreateEmptyNode()
@@ -285,13 +297,26 @@ namespace TrailsEditor{
 
 		private static BTEditorGraphNode CreateExistingNode(BTEditorGraphNode parent, BehaviourNode node)
 		{
-			return null;
+			BTEditorGraphNode gNode = BTEditorGraphNode.CreateEmptyNode();
+			gNode.m_parent = parent;
+			gNode.m_graph = parent.Graph;
+			gNode.SetExistingNode(node);
+
+			return gNode;
 		}
 
 		public static BTEditorGraphNode CreateRoot(BTEditorGraph graph, Root node)
 		{
-			
-			return null;
+			if(graph!=null && node!=null){
+				BTEditorGraphNode gNode= BTEditorGraphNode.CreateEmptyNode();
+				gNode.m_graph=graph;
+				gNode.SetExistingNode(node);
+
+				return gNode;
+			}
+			else{
+				return null;
+			}
 		}
 	}
 }
