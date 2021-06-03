@@ -1,12 +1,17 @@
-﻿using Trails;
+﻿using Trails.Serialization;
 
 namespace Trails
 {
     public abstract class Constraint
     {
+        [BTProperty("IsExpanded")]
+		[BTHideInInspector]
         private bool mIsExpanded_ = true;
+        [BTProperty("InvertResult")]
+		[BTHideInInspector]
         private bool mInvertResult = false;
       
+        [BTIgnore]
         public bool IsExpanded
         {
             get
@@ -19,6 +24,7 @@ namespace Trails
             }
         }
 
+        [BTIgnore]
         public bool InvertResult
         {
             get
