@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Trails;
+
 
 namespace TrailsEditor{
 public class BTGraphNodeStyle
@@ -45,7 +47,7 @@ public class BTGraphNodeStyle
         mStylesNames_[(int)Styles.runningSelected]  =runningSelectedStyleName; 
         
         mStylesNames_[(int)Styles.sucessNormal]  = successNormalStyleName;  
-        mStylesNames_[(int)Styles.sucessSelected]  =successSelectedStyleName; 
+        mStylesNames_[(int)Styles.successSelected]  =successSelectedStyleName; 
     
     }
 
@@ -74,15 +76,17 @@ public class BTGraphNodeStyle
             case BehaviourNodeStatus.Failure:
                 break;
                 
-            case BehaviourNodeStatus.Failure:
+            case BehaviourNodeStatus.Running:
                 break;
-            case BehaviourNodeStatus.Failure:
+            case BehaviourNodeStatus.Success:
                 break;
 
             default:
                 break;
 
+
         }
+            return new GUIStyle();
 
     }
 
@@ -98,18 +102,18 @@ public class BTGraphNodeStyle
 
     private Vector2 GetVertical(string content)
 	{
-	        mContent.text = content;
-			Vector2 size = mStyle_[(int)Styles.standardNormal].CalcSize(m_content);
-			size.x = Mathf.Max(size.x, VERT_MIN_NODE_WIDTH);
-			size.y = Mathf.Max(size.y, VERT_MIN_NODE_HEIGHT);
+	        mContent_.text = content;
+			Vector2 size = mStyle_[(int)Styles.standardNormal].CalcSize(mContent_);
+			size.x = Mathf.Max(size.x, VERT_MAX_NODE_W);
+			size.y = Mathf.Max(size.y, VERT_MAX_NODE_H);
 		
-        	if(size.x > VERT_MAX_NODE_WIDTH)
+        	if(size.x > HORZ_MIN_NODE_BORDER)
 			{
-				size.x = VERT_MAX_NODE_WIDTH;
-				size.y = Mathf.Min(mStyle_[(int)Styles.standardNormal].CalcHeight(m_content, size.x), VERT_MAX_NODE_HEIGHT);
+				size.x = VERT_MAX_NODE_W;
+				size.y = Mathf.Min(mStyle_[(int)Styles.standardNormal].CalcHeight(mContent_, size.x), VERT_MAX_NODE_H);
 			}
 
-			size.x += NODE_BORDER;
+			size.x += HORZ_MIN_NODE_BORDER;
 
 			float snapSize = BTEditorCanvas.Current.SnapSize * 2;
 			size.x = (float)Mathf.Round(size.x / snapSize) * snapSize;
@@ -120,11 +124,11 @@ public class BTGraphNodeStyle
 
     private Vector2 GetHorizontal(string content)
 	{
-            m_content.text = content;
+            mContent_.text = content;
 			Vector2 size = new Vector2();
 			
 			float snapSize = BTEditorCanvas.Current.SnapSize * 2;
-            size.y = Mathf.Max(mStyle_[(int)Styles.standardNormal].CalcHeight(m_content, HORZ_NODE_WIDTH), HORZ_MIN_NODE_HEIGHT);
+            size.y = Mathf.Max(mStyle_[(int)Styles.standardNormal].CalcHeight(mContent_, HORZ_NODE_W), HORZ_NODE_H);
 			size.x = (float)Mathf.Round(size.x / snapSize) * snapSize;
 
 

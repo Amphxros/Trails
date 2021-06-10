@@ -104,7 +104,6 @@ public class BehaviourTreeEditor : EditorWindow {
                 mBTAsset_.Dispose();
                 mBTAsset_=null;
             }
-
             BehaviourTree mBT_=asset.GetEditModeTree();
             if(mBT_!=null){
                 mBTAsset_=asset;
