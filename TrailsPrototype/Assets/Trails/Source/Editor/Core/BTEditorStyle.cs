@@ -137,7 +137,7 @@ namespace TrailsEditor{
             }
             set{
                
-                 EditorPrefs.SetInt("TrailsEditor.TreeLayout", (int)value);
+               //  EditorPrefs.SetInt("TrailsEditor.TreeLayout", value);
             }
         }
         
@@ -175,7 +175,7 @@ namespace TrailsEditor{
         }
         private static void CreateNodeStyles()
 		{
-            mStyles_= new NodeStyles[4];
+            mStyles_= new BTGraphNodeStyle[4];
 
             for(int i=0;i<4;i++){
                 if(mStyles_[i]==null){
@@ -214,6 +214,58 @@ namespace TrailsEditor{
         }
         private static void CreateGUIStyles()
 		{
+            
+        if(mBoldLabel_==null){
+            mBoldLabel_= new GUIStyle();
+
+        }
+            
+        if(mEditorFooter_==null){
+            mEditorFooter_= new GUIStyle();
+        }
+            
+        if(mSelectionBoxStyle_==null){
+            mSelectionBoxStyle_= new GUIStyle();
+        }
+            
+        if(mMultilineTextArea_==null){
+            mMultilineTextArea_= new GUIStyle();
+        }
+
+        
+        if(mListHeader_==null){
+            mListHeader_= new GUIStyle();
+
+        }
+            
+        if(mListBackGround_==null){
+            mListBackGround_= new GUIStyle();
+        }
+
+
+        if(mListButton_==null){
+            mListButton_= new GUIStyle();
+        }
+
+        if(mListDragHandle_==null){
+            mListDragHandle_= new GUIStyle();
+        }
+
+        if(mArrowUPButton_==null){
+            mArrowUPButton_= new GUIStyle();
+        }
+
+        if(mArrowDownButton_==null){
+            mArrowDownButton_= new GUIStyle();
+        }
+
+        if(mSeparatorStyle_==null){
+            mSeparatorStyle_= new GUIStyle();
+        }
+
+        if(mRegionBackground_==null){
+            mRegionBackground_= new GUIStyle();
+        }
 
         }
 

@@ -155,7 +155,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 59442e2816e3488499e603134011a7a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mBehaviourTree_: {fileID: 0}
+  mBehaviourTree_: {fileID: 11400000, guid: f53e317ff12744847aada066a09dc3aa, type: 2}
 --- !u!65 &1325633994
 BoxCollider:
   m_ObjectHideFlags: 0
