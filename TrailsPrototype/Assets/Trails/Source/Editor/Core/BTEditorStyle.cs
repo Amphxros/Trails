@@ -9,8 +9,6 @@ namespace TrailsEditor{
         private static Texture mArrowDOWN_;
         private static Texture mOptionsIcon_;
 
-        enum NodeStyles{CompositeStyle, DecoratorStyle, ActionStyle,NodeGroup}
-        private static BTGraphNodeStyle [] mStyles_;
     
         private static GUIStyle mHeaderLabel_;
         private static GUIStyle mBoldLabel_;
@@ -30,6 +28,8 @@ namespace TrailsEditor{
 		private static GUIStyle mSeparatorStyle_;
 		private static GUIStyle mRegionBackground_;
 
+        enum NodeStyles{CompositeStyle, DecoratorStyle, ActionStyle,NodeGroup}
+        private static BTGraphNodeStyle [] mStyles_;
 
         public static Texture ArrowUP{
             get{
@@ -137,7 +137,7 @@ namespace TrailsEditor{
             }
             set{
                
-                // EditorPrefs.SetInt("Trails.Editor.TreeLayout", (int)value);
+                 EditorPrefs.SetInt("TrailsEditor.TreeLayout", (int)value);
             }
         }
         
@@ -162,18 +162,54 @@ namespace TrailsEditor{
         private static void LoadTextures()
 		{
             if(mArrowUP_==null){
-
+                mArrowUP_ = Resources.Load<Texture>("Trails/EditorGUI/arrow_2_up");
             }
             if(mArrowDOWN_==null){
-
+                  mArrowDOWN_ = Resources.Load<Texture>("Trails/EditorGUI/arrow_2_down");
             }
             if(mOptionsIcon_==null){
+                mOptionsIcon_ = Resources.Load<Texture>("Trails/EditorGUI/options_icon");
                 
             }
 
         }
         private static void CreateNodeStyles()
 		{
+            mStyles_= new NodeStyles[4];
+
+            for(int i=0;i<4;i++){
+                if(mStyles_[i]==null){
+
+                    if(i==(int)(NodeStyles.CompositeStyle)){
+                        mStyles_[(int)(NodeStyles.CompositeStyle)] = new BTGraphNodeStyle("flow node 1", "flow node 1 on",
+														"flow node 6", "flow node 6 on",
+														"flow node 4", "flow node 4 on",
+														"flow node 3", "flow node 3 on");
+                    }
+
+                    else if(i==(int)(NodeStyles.DecoratorStyle)){
+                        mStyles_[(int)(NodeStyles.DecoratorStyle)] = new BTGraphNodeStyle("flow node 1", "flow node 1 on",
+														"flow node 6", "flow node 6 on",
+														"flow node 4", "flow node 4 on",
+														"flow node 3", "flow node 3 on");
+                    }
+
+                   else if(i==(int)(NodeStyles.ActionStyle)){
+                        mStyles_[(int)(NodeStyles.ActionStyle)] = new BTGraphNodeStyle("flow node 1", "flow node 1 on",
+														"flow node 6", "flow node 6 on",
+														"flow node 4", "flow node 4 on",
+														"flow node 3", "flow node 3 on");
+                    }
+
+                    else if(i==(int)(NodeStyles.NodeGroup)){
+                        mStyles_[(int)(NodeStyles.NodeGroup)]=new BTGraphNodeStyle("flow node hex 1", "flow node hex 1 on",
+													"flow node hex 6", "flow node hex 6 on",
+													"flow node hex 4", "flow node hex 4 on",
+													"flow node hex 3", "flow node hex 3 on");
+                    }
+
+                }
+            }
 
         }
         private static void CreateGUIStyles()

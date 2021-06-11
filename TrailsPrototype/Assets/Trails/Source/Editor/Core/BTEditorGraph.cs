@@ -54,15 +54,13 @@ namespace TrailsEditor{
         }
         public void SetBehaviourTree(BehaviourTree bT){
             if(mMasterRoot_!=null){
-
+                return;
             }
             mBehaviourTreeIsReadOnly_=bT.isReadOnly;
-            // mMasterRoot_ = BTEditorGraphNode.CreateRoot(this, behaviourTree.Root);
+            mMasterRoot_ = BTEditorGraphNode.CreateRoot(this, bT.Root);
             mRootStack_.Push(mMasterRoot_);
 
         }
-
-
 
 
 

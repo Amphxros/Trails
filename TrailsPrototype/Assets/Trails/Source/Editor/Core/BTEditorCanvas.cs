@@ -9,18 +9,18 @@ public class BTEditorCanvas
 		
 		public event UnityAction OnRepaint;
 		
-		private int m_snapSize;
-		private static BTEditorCanvas m_instance;
+		private int mSnapSize;
+		private static BTEditorCanvas mInstance;
 
 		public static BTEditorCanvas Current
 		{
 			get
 			{
-				return m_instance;
+				return mInstance;
 			}
 			set
 			{
-				m_instance = value;
+				mInstance = value;
 			}
 		}
 
@@ -41,8 +41,8 @@ public class BTEditorCanvas
 		
 		public int SnapSize
 		{
-			get { return m_snapSize; }
-			set { m_snapSize = Mathf.Max(value, 1); }
+			get { return mSnapSize; }
+			set { mSnapSize = Mathf.Max(value, 1); }
 		}
 
 		public bool ReadOnly

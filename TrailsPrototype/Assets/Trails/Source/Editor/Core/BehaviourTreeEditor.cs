@@ -54,13 +54,13 @@ public class BehaviourTreeEditor : EditorWindow {
 				Rect footerRect = new Rect(0.0f, position.height - 18.0f, position.width, 20.0f);
 				Rect canvasRect = new Rect(0.0f, navHistoryRect.yMax, position.width, position.height - (footerRect.height + navHistoryRect.height));
 				
-				// BTEditorStyle.EnsureStyle();
+				 BTEditorStyle.EnsureStyle();
 				mGrid_.DrawGUI(position.size);
 				// mGraph_.DrawGUI(canvasRect);
 				mCanvas_.HandleEvents(canvasRect, position.size);
 				// DrawNavigationHistory(navHistoryRect);
-				// DrawFooter(footerRect);
-				// DrawOptions(optionsRect);
+				DrawFooter(footerRect);
+				DrawOptions(optionsRect);
 
 				if(mCanvas_.IsDebuging)
 				{
@@ -69,10 +69,21 @@ public class BehaviourTreeEditor : EditorWindow {
 			}
 		}
 
+    private void DrawFooter(Rect footer){
+        string behaviourTreePath = AssetDatabase.GetAssetPath(mBTAsset_).Substring(7);
+        EditorGUI.LabelField(footer, behaviourTreePath, BTEditorStyle.EditorFooter);
+    }
 
+    private void DrawOptions(Rect options){
+	        if(GUI.Button(options, BTEditorStyle.OptionsIcon, EditorStyles.toolbarButton))
+			{
+				//GenericMenu menu = BTContextMenuFactory.CreateBehaviourTreeEditorMenu(this);
+				// menu.DropDown(new Rect(Event.current.mousePosition, Vector2.zero));
+			}
+    }
     
     private void OnDisable(){
-			Dispose();
+		Dispose();
 	
     }
 
@@ -100,29 +111,26 @@ public class BehaviourTreeEditor : EditorWindow {
 
     private void SetBTAsset(BTAsset asset, bool clearNavigationHistory){
         if(asset!=null && (clearNavigationHistory || asset!=mBTAsset_)){
+            
             if(mBTAsset_!=null){
                 mBTAsset_.Dispose();
                 mBTAsset_=null;
             }
+            
             BehaviourTree mBT_=asset.GetEditModeTree();
             if(mBT_!=null){
                 mBTAsset_=asset;
+                mGraph_.SetBehaviourTree(mBT_);
+                mCanvas_.Area=mBTAsset_.CanvasArea;
             
-
-            if(clearNavigationHistory){
-                
-            }
             }
             else{
-
+                CrashEditor("Failed to deserialize BT, Try to enable text serialization and manually edit the asset file to fix the behaviour tree. ");
             }
 
 
         }
         
-        else{
-
-        }
     }
     private void CrashEditor(string message){
 			

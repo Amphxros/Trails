@@ -45,12 +45,65 @@ namespace TrailsEditor{
 
         public static string MakePrettyName(string name)
 		{
+          if(string.IsNullOrEmpty(name)){
+				throw new System.ArgumentException("Name is null or empty", "name");
+          }
+          else{
+			int startIndex = 0;
+
+			if(name.StartsWith("m", System.StringComparison.InvariantCultureIgnoreCase))
+				startIndex = 1;
+
+			mStringBuilder.Length = 0;
+			for(int i = startIndex; i < name.Length; i++)
+			{
+				if(!char.IsLetterOrDigit(name[i]))
+				{
+					if(mStringBuilder.Length > 0)
+						mStringBuilder.Append(" ");
+
+					continue;
+				}
+
+				if(mStringBuilder.Length == 0)
+				{
+					mStringBuilder.Append(char.ToUpper(name[i]));
+				}
+				else
+				{
+					if(i > startIndex)
+					{
+						if((char.IsUpper(name[i]) && !char.IsUpper(name[i - 1])) ||
+							(char.IsLetter(name[i]) && char.IsDigit(name[i - 1])) ||
+							(char.IsDigit(name[i]) && char.IsLetter(name[i - 1])))
+						{
+							mStringBuilder.Append(" ");
+						}
+					}
+
+					mStringBuilder.Append(name[i]);
+				}
+			}
+
+			return mStringBuilder.Length > 0 ? mStringBuilder.ToString() : name;
+            }
             return "";
         }
 
         public static string GetResourcePath(UnityEngine.Object target)
 		{
-            return "";
+            if(target!=null){
+             string path=AssetDatabase.GetAssetPath(target);
+             int i= path.IndexOf('.');
+             if(i > 0){
+                path=path.Substring(0,i);
+             }
+             return path;
+            }
+            else{
+
+                return "";
+            }
 
         }
     
