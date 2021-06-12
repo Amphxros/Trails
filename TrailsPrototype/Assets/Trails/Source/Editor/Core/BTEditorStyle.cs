@@ -1,5 +1,6 @@
 ﻿using UnityEditor;
 using UnityEngine;
+using Trails;
 
 namespace TrailsEditor{
     public static class BTEditorStyle{
@@ -214,59 +215,103 @@ namespace TrailsEditor{
         }
         private static void CreateGUIStyles()
 		{
-            
+        
+        if(mHeaderLabel_==null){
+            mHeaderLabel_= new GUIStyle(EditorStyles.boldLabel);
+            mHeaderLabel_.alignment = TextAnchor.UpperLeft;
+			mHeaderLabel_.contentOffset = new Vector2(0, -2);
+			mHeaderLabel_.fontSize = 20;
+			mHeaderLabel_.fontStyle = FontStyle.Bold;
+        }
+
         if(mBoldLabel_==null){
-            mBoldLabel_= new GUIStyle();
+            mBoldLabel_= new GUIStyle(EditorStyles.boldLabel);
 
         }
             
         if(mEditorFooter_==null){
-            mEditorFooter_= new GUIStyle();
+            mEditorFooter_= new GUIStyle(EditorStyles.boldLabel);
+            mEditorFooter_.alignment=TextAnchor.MiddleRight;
+            mEditorFooter_.contentOffset = new Vector2(-10, 0);
         }
             
         if(mSelectionBoxStyle_==null){
-            mSelectionBoxStyle_= new GUIStyle();
+            mSelectionBoxStyle_ = mEditorSkin_.FindStyle("selection_box");
+            if(mSelectionBoxStyle_==null){
+                mSelectionBoxStyle_= mEditorSkin_.box;
+            }
+            
         }
             
         if(mMultilineTextArea_==null){
-            mMultilineTextArea_= new GUIStyle();
+            mMultilineTextArea_= new GUIStyle(EditorStyles.textField);
+            mMultilineTextArea_.wordWrap=true;
         }
 
         
         if(mListHeader_==null){
             mListHeader_= new GUIStyle();
+            mListHeader_.normal.textColor = Color.black;
+			mListHeader_.alignment = TextAnchor.MiddleLeft;
+			mListHeader_.contentOffset = new Vector2(10, 0);
+			mListHeader_.fontSize = 11;
 
         }
             
         if(mListBackGround_==null){
-            mListBackGround_= new GUIStyle();
+            mListBackGround_= new GUIStyle("RL Background");
         }
 
 
         if(mListButton_==null){
-            mListButton_= new GUIStyle();
+            //mListButton_= new GUIStyle(Array.Find<GUIStyle>(GUI.skin.customStyles, obj => obj.name == "RL FooterButton"));
         }
 
         if(mListDragHandle_==null){
-            mListDragHandle_= new GUIStyle();
+            mListDragHandle_= new GUIStyle("RL DragHandle");
         }
 
         if(mArrowUPButton_==null){
-            mArrowUPButton_= new GUIStyle();
+            mArrowUPButton_ = mEditorSkin_.FindStyle("arrow_up");
         }
 
         if(mArrowDownButton_==null){
-            mArrowDownButton_= new GUIStyle();
+            mArrowDownButton_ = mEditorSkin_.FindStyle("arrow_down");
         }
 
         if(mSeparatorStyle_==null){
-            mSeparatorStyle_= new GUIStyle();
+            mSeparatorStyle_ = new GUIStyle("sv_iconselector_sep");
         }
 
         if(mRegionBackground_==null){
-            mRegionBackground_= new GUIStyle();
+            mRegionBackground_= new GUIStyle("RegionBg");
+            mRegionBackground_.contentOffset= new Vector2(0,-5);
+            mRegionBackground_.alignment= TextAnchor.MiddleCenter;
         }
 
+        }
+
+
+        public static BTGraphNodeStyle GetStyle(BehaviourNode node){
+            if(node==null){
+                return null;
+            }
+            else{
+                if(node is NodeGroup){
+
+                }
+                else if(node is Trails.Action){
+
+                }
+                else if(node is Composite){
+
+                }
+                else if(node is Decorator){
+
+                }
+
+                return null;
+            }
         }
 
     }

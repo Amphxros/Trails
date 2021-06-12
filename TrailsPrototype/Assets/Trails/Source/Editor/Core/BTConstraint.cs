@@ -41,8 +41,8 @@ namespace TrailsEditor
                 }
             };
 
-            foreach(var item in mConstraintMenuPaths){
-                menu.AddItem(new GUIContent("Add Constraint/" + item.Item2), false, onCreateConstraint, item.Item1);
+            foreach(var cons in mConstraintMenuPaths){
+                menu.AddItem(new GUIContent("Add Constraint/" + cons.Item2), false, onCreateConstraint, cons.Item1);
             }
         }
     

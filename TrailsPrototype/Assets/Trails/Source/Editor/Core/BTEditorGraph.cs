@@ -58,11 +58,12 @@ namespace TrailsEditor{
             if(mMasterRoot_!=null){
                 return;
             }
+            else{
             
             mBehaviourTreeIsReadOnly_=bT.isReadOnly;
             mMasterRoot_ = BTEditorGraphNode.CreateRoot(this, bT.Root);
             mRootStack_.Push(mMasterRoot_);
-
+            }
         }
 
         public void DrawGUI(Rect dest)

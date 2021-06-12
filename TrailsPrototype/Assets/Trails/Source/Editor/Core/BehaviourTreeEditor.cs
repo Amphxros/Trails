@@ -39,7 +39,7 @@ public class BehaviourTreeEditor : EditorWindow {
         }
         
         if(mGraph_==null){
-         mGraph_= new BTEditorGraph();   
+         mGraph_= BTEditorGraph.Create();   
         }
 
 
@@ -56,7 +56,7 @@ public class BehaviourTreeEditor : EditorWindow {
 				
 				 BTEditorStyle.EnsureStyle();
 				mGrid_.DrawGUI(position.size);
-				// mGraph_.DrawGUI(canvasRect);
+				mGraph_.DrawGUI(canvasRect);
 				mCanvas_.HandleEvents(canvasRect, position.size);
 				// DrawNavigationHistory(navHistoryRect);
 				DrawFooter(footerRect);

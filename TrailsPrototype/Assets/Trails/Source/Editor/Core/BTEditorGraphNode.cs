@@ -14,10 +14,10 @@ namespace TrailsEditor{
 		private const int CONTEXT_MOUSE_BUTTON = 1;
 		private const float DOUBLE_CLICK_THRESHOLD = 0.4f;
 
-		private List<BTEditorGraphNode> m_children;
-		private BehaviourNode m_node;
-		private BTEditorGraphNode m_parent;
-		private BTEditorGraph m_graph;
+		private List<BTEditorGraphNode> mChildren_;
+		private BehaviourNode mNode_;
+		private BTEditorGraphNode mParent_;
+		private BTEditorGraph mGraph_;
 		private Vector2 m_dragOffset;
 		private float? m_lastClickTime;
 		private bool m_isSelected;
@@ -26,37 +26,37 @@ namespace TrailsEditor{
 		
 		public BehaviourNode Node
 		{
-			get { return m_node; }
+			get { return mNode_; }
 		}
 
 		public BTEditorGraphNode Parent
 		{
-			get { return m_parent; }
+			get { return mParent_; }
 		}
 
 		public BTEditorGraph Graph
 		{
-			get { return m_graph; }
+			get { return mGraph_; }
 		}
 
 		public int ChildCount
 		{
-			get { return m_children.Count; }
+			get { return mChildren_.Count; }
 		}
 
 		public bool IsRoot
 		{
-			get { return m_graph.IsRoot(this); }
+			get { return mGraph_.IsRoot(this); }
 		}
 
 		public Vector2 NodePositon
 		{
-			get { return m_node.Position; }
+			get { return mNode_.Position; }
 			set
 			{
 				if(!IsRoot)
 				{
-					m_node.Position = value;
+					mNode_.Position = value;
 				}
 			}
 		}
@@ -78,9 +78,9 @@ namespace TrailsEditor{
 		
 		private void OnCreated()
 		{
-			if(m_children == null)
+			if(mChildren_ == null)
 			{
-				m_children = new List<BTEditorGraphNode>();
+				mChildren_ = new List<BTEditorGraphNode>();
 			}
 			
 			m_isSelected = false;
@@ -100,9 +100,9 @@ namespace TrailsEditor{
 
 		private void UpdateChildren()
 		{
-			for(int i = m_children.Count - 1; i >= 0; i--)
+			for(int i = mChildren_.Count - 1; i >= 0; i--)
 			{
-				m_children[i].Update();
+				mChildren_[i].Update();
 			}
 		}
 
@@ -219,9 +219,9 @@ namespace TrailsEditor{
 
 		public void OnDelete()
 		{
-			if(m_parent != null)
+			if(mParent_ != null)
 			{
-				m_parent.RemoveChild(this);
+				mParent_.RemoveChild(this);
 				BTEditorGraphNode.DestroyImmediate(this);
 			}
 		}
@@ -233,7 +233,7 @@ namespace TrailsEditor{
 
 		public int GetChildIndex(BTEditorGraphNode child)
 		{
-			return m_children.IndexOf(child);
+			return mChildren_.IndexOf(child);
 		}
 
 		public void ChangeChildIndex(int sourceIndex, int destinationIndex)
@@ -243,9 +243,9 @@ namespace TrailsEditor{
 
 		public BTEditorGraphNode GetChild(int index)
 		{
-			if(index >= 0 && index < m_children.Count)
+			if(index >= 0 && index < mChildren_.Count)
 			{
-				return m_children[index];
+				return mChildren_[index];
 			}
 
 			return null;
@@ -253,16 +253,16 @@ namespace TrailsEditor{
 
 		private void RemoveChild(BTEditorGraphNode child)
 		{
-			if(m_children.Remove(child))
+			if(mChildren_.Remove(child))
 			{
-				if(m_node is Composite)
+				if(mNode_ is Composite)
 				{
-					Composite composite = m_node as Composite;
+					Composite composite = mNode_ as Composite;
 					composite.RemoveChild(child.Node);
 				}
-				else if(m_node is Decorator)
+				else if(mNode_ is Decorator)
 				{
-					Decorator decorator = m_node as Decorator;
+					Decorator decorator = mNode_ as Decorator;
 					decorator.SetChildren(null);
 				}
 			}
@@ -270,40 +270,44 @@ namespace TrailsEditor{
 
 		private void DestroyChildren()
 		{
-			for(int i=0;i<m_children.Count;i++){
+			for(int i=0;i<mChildren_.Count;i++){
 				
 			}
-			if(m_node is Composite){
-				Composite composite = m_node as Composite;
+			if(mNode_ is Composite){
+				Composite composite = mNode_ as Composite;
 				composite.RemoveAllChildren();
 				}
-			else if(m_node is Decorator){
+			else if(mNode_ is Decorator){
 
-				Decorator decorator = m_node as Decorator;
+				Decorator decorator = mNode_ as Decorator;
 				decorator.SetChildren(null);
-				//(Decorator)m_node.SetChildren(null);
+				//(Decorator)mNode_.SetChildren(null);
 			}
 	
 		}
 
 		private void OnDestroy()
 		{
-			// m_graph.OnNodeDeselect(this);
-			for(int i=0;i<m_children.Count;i++){
-
+			mGraph_.OnNodeDeselect(this);
+			for(int i=0;i<mChildren_.Count;i++){
+				BTEditorGraphNode.DestroyImmediate(mChildren_[i]);
 			}
 		}
 
 		private static BTEditorGraphNode CreateEmptyNode()
 		{
-			return null;
+			BTEditorGraphNode node = ScriptableObject.CreateInstance<BTEditorGraphNode>();
+			node.OnCreated();
+			node.hideFlags = HideFlags.HideAndDontSave;
+
+			return node;
 		}
 
 		private static BTEditorGraphNode CreateExistingNode(BTEditorGraphNode parent, BehaviourNode node)
 		{
 			BTEditorGraphNode gNode = BTEditorGraphNode.CreateEmptyNode();
-			gNode.m_parent = parent;
-			gNode.m_graph = parent.Graph;
+			gNode.mParent_ = parent;
+			gNode.mGraph_= parent.Graph;
 			gNode.SetExistingNode(node);
 
 			return gNode;
@@ -313,7 +317,7 @@ namespace TrailsEditor{
 		{
 			if(graph!=null){
 				BTEditorGraphNode gNode= BTEditorGraphNode.CreateEmptyNode();
-				gNode.m_graph=graph;
+				gNode.mGraph_=graph;
 				gNode.SetExistingNode(node);
 
 				return gNode;

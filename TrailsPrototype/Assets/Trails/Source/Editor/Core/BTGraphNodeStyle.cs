@@ -130,8 +130,7 @@ public class BTGraphNodeStyle
 			float snapSize = BTEditorCanvas.Current.SnapSize * 2;
             size.y = Mathf.Max(mStyle_[(int)Styles.standardNormal].CalcHeight(mContent_, HORZ_NODE_W), HORZ_NODE_H);
 			size.x = (float)Mathf.Round(size.x / snapSize) * snapSize;
-
-
+            
 			return size;
 
     }
