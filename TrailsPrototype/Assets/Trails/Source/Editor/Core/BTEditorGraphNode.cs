@@ -274,9 +274,13 @@ namespace TrailsEditor{
 				
 			}
 			if(m_node is Composite){
-				//(Composite)m_node.RemoveAllChildren();
-			}
+				Composite composite = m_node as Composite;
+				composite.RemoveAllChildren();
+				}
 			else if(m_node is Decorator){
+
+				Decorator decorator = m_node as Decorator;
+				decorator.SetChildren(null);
 				//(Decorator)m_node.SetChildren(null);
 			}
 	
@@ -307,7 +311,7 @@ namespace TrailsEditor{
 
 		public static BTEditorGraphNode CreateRoot(BTEditorGraph graph, Root node)
 		{
-			if(graph!=null && node!=null){
+			if(graph!=null){
 				BTEditorGraphNode gNode= BTEditorGraphNode.CreateEmptyNode();
 				gNode.m_graph=graph;
 				gNode.SetExistingNode(node);
