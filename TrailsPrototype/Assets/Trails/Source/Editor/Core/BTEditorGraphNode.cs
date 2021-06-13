@@ -20,7 +20,7 @@ namespace TrailsEditor{
 		private BTEditorGraph mGraph_;
 		private Vector2 m_dragOffset;
 		private float? m_lastClickTime;
-		private bool m_isSelected;
+		private bool mIsSelected_;
 		private bool m_isDragging;
 		private bool m_canBeginDragging;
 		
@@ -64,7 +64,7 @@ namespace TrailsEditor{
 		private bool CanUpdateChildren
 		{
 			get{
-			return false;
+			return !(mNode_ is NodeGroup) || mGraph_.IsRoot(this);
 			}
 		}
 
@@ -72,7 +72,7 @@ namespace TrailsEditor{
 		{
 			get
 			{
-			return false;
+			return !(mNode_ is NodeGroup) || mGraph_.IsRoot(this);
 			}
 		}
 		
@@ -83,7 +83,7 @@ namespace TrailsEditor{
 				mChildren_ = new List<BTEditorGraphNode>();
 			}
 			
-			m_isSelected = false;
+			mIsSelected_ = false;
 			m_isDragging = false;
 			m_canBeginDragging = false;
 			m_dragOffset = Vector2.zero;
@@ -117,6 +117,7 @@ namespace TrailsEditor{
 				DrawTransitions();
 
 			DrawSelf();
+			DrawComment();
 
 			if(CanDrawChildren)
 				DrawChildren();
@@ -128,24 +129,43 @@ namespace TrailsEditor{
 
 		private void DrawSelf()
 		{
+			string label="node";
+			
+
+			BTGraphNodeStyle style = BTEditorStyle.GetStyle(mNode_);
+			Rect pos = new Rect( mNode_.Position + BTEditorCanvas.Current.Position, new Vector2(100,40));
+			BehaviourNodeStatus status = mNode_.Status;
+
+			EditorGUI.LabelField(pos, label, style.GetStyle(status, mIsSelected_));
 		
+
 		}
 
 		private void DrawChildren()
 		{
+			foreach( var c in mChildren_){
+				c.Draw();
+			}
 			
 		}
 
+		private void DrawComment()
+		{
+		
+		}
+
+
+
 		public void OnSelected()
 		{
-			m_isSelected = true;
+			mIsSelected_ = true;
 			Selection.activeObject = this;
 			BTEditorCanvas.Current.Repaint();
 		}
 
 		public void OnDeselected()
 		{
-			m_isSelected = false;
+			mIsSelected_ = false;
 			m_isDragging = false;
 			if(Selection.activeObject == this)
 			{
@@ -154,15 +174,15 @@ namespace TrailsEditor{
 			BTEditorCanvas.Current.Repaint();
 		}
 
-		public void OnBeginDrag(Vector2 position)
+		public void OnBeginDrag(Vector2 pos)
 		{
-			m_dragOffset = position - NodePositon;
+			m_dragOffset = pos - NodePositon;
 			m_isDragging = true;
 		}
 
-		public void OnDrag(Vector2 position)
+		public void OnDrag(Vector2 pos)
 		{
-			Vector2 nodePos = position - m_dragOffset;
+			Vector2 nodePos = pos - m_dragOffset;
 			if(BTEditorCanvas.Current.SnapToGrid)
 			{
 				float snapSize = BTEditorCanvas.Current.SnapSize;
@@ -281,7 +301,6 @@ namespace TrailsEditor{
 
 				Decorator decorator = mNode_ as Decorator;
 				decorator.SetChildren(null);
-				//(Decorator)mNode_.SetChildren(null);
 			}
 	
 		}
@@ -297,6 +316,7 @@ namespace TrailsEditor{
 		private static BTEditorGraphNode CreateEmptyNode()
 		{
 			BTEditorGraphNode node = ScriptableObject.CreateInstance<BTEditorGraphNode>();
+			node.NodePositon= new Vector2(0,0);
 			node.OnCreated();
 			node.hideFlags = HideFlags.HideAndDontSave;
 

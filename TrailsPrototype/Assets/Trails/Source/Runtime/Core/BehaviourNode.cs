@@ -15,12 +15,38 @@ namespace Trails
         private string mUniqueID_;
 
         private Vector2 mPos_;
-        private string mComment_;
+        
         private string mName_;
+        public string Name{
+            get{
+                return mName_;
+            }
+            set{
+                mName_=value;
+            }
+        }
+        private string mComment_;
+        
+        public string Comment{
+            get{
+                return mComment_;
+            }
+            set{
+                mComment_=value;
+            }
+        }
+        
         private float mWeight_;
 
         private BehaviourNodeStatus mStatus;
-        //mas variables aqui
+
+        public BehaviourNodeStatus Status{
+            get{
+                return mStatus;
+            }
+        }
+        public BehaviourNodeStatus get(){ return mStatus; }
+      
         private List<Constraint> mConstraints_;
 		private List<Service> mServices_;
         public BehaviourNode(){
@@ -28,7 +54,6 @@ namespace Trails
             mConstraints_= new List<Constraint>();
             mServices_= new List<Service>();
         }
-        public BehaviourNodeStatus get(){ return mStatus; }
 
 #if UNITY_EDITOR
 		/// <summary>
@@ -51,9 +76,6 @@ namespace Trails
 			get { return mServices_; }
 		}
 #endif
-
-
-
         public Vector2 Position
         {
             get
@@ -65,30 +87,7 @@ namespace Trails
                 mPos_ = value;
             }
         }
-        public string Name
-        {
-            get
-            {
-                return mName_;
-            }
-            set
-            {
-                mName_ = value;
-            }
-        }
-        public string Comment
-        {
-            get
-            {
-                return mComment_;
-            }
-            set
-            {
-                mComment_ = value;
-            }
-        }
-
-        public float Weight
+         public float Weight
         {
             get
             {
@@ -186,7 +185,6 @@ namespace Trails
         public virtual void OnEnter(AIAgent agent)
 		{
 		}
-
 		public virtual void OnExit(AIAgent agent)
 		{
 		}

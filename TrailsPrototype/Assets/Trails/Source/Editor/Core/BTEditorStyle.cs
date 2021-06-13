@@ -262,9 +262,8 @@ namespace TrailsEditor{
             mListBackGround_= new GUIStyle("RL Background");
         }
 
-
         if(mListButton_==null){
-            //mListButton_= new GUIStyle(Array.Find<GUIStyle>(GUI.skin.customStyles, obj => obj.name == "RL FooterButton"));
+            mListButton_= new GUIStyle("RL FooterButton");
         }
 
         if(mListDragHandle_==null){
@@ -298,21 +297,36 @@ namespace TrailsEditor{
             }
             else{
                 if(node is NodeGroup){
-
+                    return mStyles_[(int)NodeStyles.NodeGroup];
                 }
                 else if(node is Trails.Action){
-
+                    return mStyles_[(int)NodeStyles.ActionStyle];
                 }
                 else if(node is Composite){
-
+                    return mStyles_[(int)NodeStyles.CompositeStyle];
                 }
                 else if(node is Decorator){
-
+                    return mStyles_[(int)NodeStyles.DecoratorStyle];
                 }
 
                 return null;
             }
         }
+
+        public static Color GetTransitionColor(BehaviourNodeStatus status)
+		{
+			switch(status)
+			{
+			case BehaviourNodeStatus.Failure:
+				return Color.red;
+			case BehaviourNodeStatus.Running:
+				return Color.yellow;
+			case BehaviourNodeStatus.Success:
+				return Color.green;
+			}
+
+			return Color.white;
+		}
 
     }
 }

@@ -16,6 +16,7 @@ namespace Trails
             }
         }
 
+
         public override void OnBeforeSerialize(BTAsset btAsset)
         {
             base.OnBeforeSerialize(btAsset);

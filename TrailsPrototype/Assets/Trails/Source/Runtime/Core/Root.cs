@@ -5,7 +5,26 @@ using UnityEngine;
 namespace Trails{
 public class Root : BehaviourNode
 {
-    public string Tittle= "Root";
+    public override string Title
+		{
+			get
+			{
+				return "Root";
+			}
+		}
+
+
+		public Root()
+		{
+
+		}
+
+
+		public Root(BehaviourNode node)
+			: base()
+		{
+			
+		}
 
 }
 }
