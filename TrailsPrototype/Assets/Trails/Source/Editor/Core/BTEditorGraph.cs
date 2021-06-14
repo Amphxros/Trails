@@ -119,17 +119,27 @@ namespace TrailsEditor{
                     break;
                 
                     case EventType.MouseUp:
-                    
-                    if(BTEditorCanvas.Current.Event.button == SELECT_MOUSE_BUTTON){
 
-                    }
-                    
-                    else if(BTEditorCanvas.Current.Event.button == CONTEXT_MOUSE_BUTTON){
+                        if (BTEditorCanvas.Current.Event.button == SELECT_MOUSE_BUTTON)
+                        {
+                            if (dest.Contains(BTEditorCanvas.Current.Event.mousePosition))
+                            {
 
-                    }
+                                mDrawSelectionBox_ = false;
+                                BTEditorCanvas.Current.Event.Use();
 
-                    BTEditorCanvas.Current.Event.Use();
-                    break;
+                            }
+                        }
+
+                        else if (BTEditorCanvas.Current.Event.button == CONTEXT_MOUSE_BUTTON)
+                        {
+                            GenericMenu menu = BTContextMenuFactory.CreateGraphContextMenu(this);
+                            menu.DropDown(new Rect(BTEditorCanvas.Current.Event.mousePosition, Vector2.zero));
+                            BTEditorCanvas.Current.Event.Use();
+
+                        }
+                        mCanBeginBoxSelection_ = false;
+                         break;
                 
                     case EventType.MouseDrag:
                     if(!mDrawSelectionBox_ && mCanBeginBoxSelection_)
@@ -149,8 +159,14 @@ namespace TrailsEditor{
         public void OnPushNodeGroup(BTEditorGraphNode node)
 		{
 
+            if (node != null && node.Node is NodeGroup)
+            {
+                
+                mRootStack_.Push(node);
 
-            
+                //SelectSingle(node);
+            }
+
         }
 
         // Seleccion de nodos
@@ -185,20 +201,30 @@ namespace TrailsEditor{
             }
 
         }
-
-
 		
         private void ClearSelection(){
 
         }
 
-
-
 	    public bool IsRoot(BTEditorGraphNode node)
 		{
 			return node == WorkingRoot;
 		}
-        
+
+
+        public void OnNodeCreateChild(BTEditorGraphNode parent, Type childType)
+        {
+            if (parent != null && childType != null)
+            {
+                BTEditorGraphNode child = parent.OnCreateChild(childType);
+                if (child != null)
+                {
+                
+                }
+            }
+        }
+
+
         public static BTEditorGraph Create()
 		{
             BTEditorGraph graph = ScriptableObject.CreateInstance<BTEditorGraph>();

@@ -108,7 +108,83 @@ namespace TrailsEditor{
 
 		private void HandleEvents()
 		{
-			
+			Rect pos = new Rect(mNode_.Position, BTEditorStyle.GetNodeSize(mNode_));
+			Vector2 mousePos = BTEditorCanvas.Current.WindowSpaceToCanvasSpace(BTEditorCanvas.Current.Event.mousePosition);
+
+			//click
+			if (BTEditorCanvas.Current.Event.type == EventType.MouseDown && BTEditorCanvas.Current.Event.button == SELECT_MOUSE_BUTTON)
+			{
+				if (pos.Contains(mousePos)) {
+
+					// single click
+					if (!mIsSelected_) mGraph_.OnNodeSelect(this);
+
+					// double click
+					if(m_lastClickTime > 0)
+                    {
+						if (Time.realtimeSinceStartup <= m_lastClickTime + DOUBLE_CLICK_THRESHOLD)
+						{
+							OnDoubleClicked();
+						}
+					}
+
+					m_lastClickTime = Time.realtimeSinceStartup;
+
+					m_canBeginDragging = !IsRoot;
+					BTEditorCanvas.Current.Event.Use();
+				}
+			}
+			//
+			else if (BTEditorCanvas.Current.Event.type == EventType.MouseDown && BTEditorCanvas.Current.Event.button == CONTEXT_MOUSE_BUTTON)
+			{
+				if (pos.Contains(mousePos))
+				{
+					ShowContextMenu();
+					BTEditorCanvas.Current.Event.Use();
+				}
+			}
+			//release
+			else if (BTEditorCanvas.Current.Event.type == EventType.MouseUp && BTEditorCanvas.Current.Event.button == SELECT_MOUSE_BUTTON)
+			{
+				if (m_isDragging)
+				{
+					mGraph_.OnNodeEndDrag(this);
+					BTEditorCanvas.Current.Event.Use();
+				}
+				m_canBeginDragging = false;
+			}
+			//drag
+			else if (BTEditorCanvas.Current.Event.type == EventType.MouseDrag && BTEditorCanvas.Current.Event.button == DRAG_MOUSE_BUTTON)
+			{
+				if (!mGraph_.ReadOnly && !m_isDragging && m_canBeginDragging && pos.Contains(mousePos))
+				{
+					mGraph_.OnNodeBeginDrag(this, mousePos);
+					BTEditorCanvas.Current.Event.Use();
+				}
+				else if (m_isDragging)
+				{
+					mGraph_.OnNodeDrag(this, mousePos);
+					BTEditorCanvas.Current.Event.Use();
+				}
+			}
+
+			else if (mGraph_.SelectionBox.HasValue)
+			{
+				if (mGraph_.SelectionBox.Value.Contains(pos.center))
+				{
+					if (!mIsSelected_)
+					{
+						mGraph_.OnNodeSelect(this);
+					}
+				}
+				else
+				{
+					if (mIsSelected_)
+					{
+						mGraph_.OnNodeDeselect(this);
+					}
+				}
+			}
 		}
 
 		public void Draw()

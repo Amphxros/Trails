@@ -21,23 +21,23 @@ namespace TrailsEditor
             Assembly ass = node.Assembly;
 
             mNodeMenuPaths = new List<Tuple<Type, string>>();
-       
-            foreach(Type t in ass.GetTypes().Where(s => s.IsSubClassOf(node)))
+
+            foreach (Type t in ass.GetTypes().Where(s => s.IsSubclassOf(node)))
             {
                 object[] att = t.GetCustomAttributes(typeof(AddNodeMenuAttribute), false);
-                if(att.Length > 0)
+                if (att.Length > 0)
                 {
                     AddNodeMenuAttribute a = att[0] as AddNodeMenuAttribute;
-                    //mNodeMenuPaths.Add(new Tuple<Type, string>(t, att.MenuPath));
-                    mNodeMenuPaths.Add(new Tuple<Type, string>(t, att.menuPath));
+
+                    mNodeMenuPaths.Add(new Tuple<Type, string>(t, a.menuPath));
                 }
             }
-        
+
         }
 
         public static void AddChild(GenericMenu menu, BTEditorGraphNode target)
         {
-            GenericMenu.MenuFunction2 onCreateChild = t => target.Graph.OnCreateChild(target, t as Type);
+            GenericMenu.MenuFunction2 onCreateChild = t => target.Graph.OnNodeCreateChild(target, t as Type);
             foreach (var v in mNodeMenuPaths)
             {
                 menu.AddItem(new GUIContent("Add child/" + v.Item2), false, onCreateChild, v.Item1);
