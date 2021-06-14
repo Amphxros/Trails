@@ -2,17 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BTEditorLayout : MonoBehaviour
+namespace TrailsEditor
 {
-    // Start is called before the first frame update
-    void Start()
+    public class BTEditorLayout : MonoBehaviour
     {
-        
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+
+
     }
 }

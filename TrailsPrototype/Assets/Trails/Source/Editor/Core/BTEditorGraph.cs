@@ -32,6 +32,7 @@ namespace TrailsEditor{
 
 		public Rect? SelectionBox { get; set; }
 
+
         private BTEditorGraphNode WorkingRoot
 		{
 			get

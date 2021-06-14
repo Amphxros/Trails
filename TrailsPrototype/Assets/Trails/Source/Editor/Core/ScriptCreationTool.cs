@@ -32,19 +32,19 @@ namespace  TrailsEditor
 				switch(mScript)
 				{
 				case CustomScriptType.Composite:
-					template = Resources.Load<TextAsset>("Trails/Resources/Templates/Composite");
+					template = Resources.Load<TextAsset>("Trails/Resources/Templates 1/Composite");
 					break;
 				case CustomScriptType.Decorator:
-					template = Resources.Load<TextAsset>("Trails/Resources/Templates/Decorator");
+					template = Resources.Load<TextAsset>("Trails/Resources/Templates 1/Decorator");
 					break;
 				case CustomScriptType.Action:
-					template = Resources.Load<TextAsset>("Trails/Resources/Templates/Action");
+					template = Resources.Load<TextAsset>("Trails/Resources/Templates 1/Action");
 					break;
 				case CustomScriptType.Constraint:
-					template = Resources.Load<TextAsset>("Trails/Resources/Templates/Constraint");
+					template = Resources.Load<TextAsset>("Trails/Resources/Templates 1/Constraint");
 					break;
 				case CustomScriptType.Service:
-					template = Resources.Load<TextAsset>("Trails/Resources/Templates/Service");
+					template = Resources.Load<TextAsset>("Trails/Resources/Templates 1/Service");
 					break;
 				}
 
@@ -81,7 +81,7 @@ namespace  TrailsEditor
             [MenuItem("Assets/Create/Trails/Constraint")]
             private static void CreateCustomConstraintScript()
 		    {
-			    CreateScript(CustomScriptType.Constraint, "CustomConstrint");
+			    CreateScript(CustomScriptType.Constraint, "CustomConstraint");
             }
             [MenuItem("Assets/Create/Trails/Service")]
             private static void CreateCustomServiceScript()
