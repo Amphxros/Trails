@@ -11,11 +11,11 @@ using Trails;
 
 namespace TrailsEditor
 {
-    public static class BTConstraint
+    public static class BTConstraintFactory
     {
         private static List<Tuple<Type, string>> mConstraintMenuPaths;
 
-        static BTConstraint(){
+        static BTConstraintFactory(){
             Type cType= typeof(Constraint);
             Assembly assembly=cType.Assembly;
 
