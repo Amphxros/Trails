@@ -166,12 +166,17 @@ namespace TrailsEditor {
             if (node != null && node.Node is NodeGroup)
             {
                 mRootStack_.Push(node);
-                //SelectSingle(node);
+                SelectSingle(node);
             }
 
         }
 
         public void OnPopNodeGroup() {
+            if(mRootStack_.Count > 1){
+                var oldRoot = mRootStack_.Pop();
+                SelectNodeGroup(oldRoot);
+                //BTUndoSystem.registerUndo(new UndoNodeGroupPop(oldRool));
+            }
 
         }
 
@@ -186,26 +191,28 @@ namespace TrailsEditor {
             }
             else if (BTEditorCanvas.Current.Event.control || SelectionBox.HasValue) {
                 if (mSelection_.Contains(node)) {
-                    if (node.Node is NodeGroup && !IsRoot()) {
-
+                    if (node.Node is NodeGroup && !IsRoot(node)) {
+                        SelectNodeAdditive(node);
                     }
                     else {
-
+                        SelectNodeGroup(node);
                     }
                 }
             }
             else {
                 if (node.Node is NodeGroup && !IsRoot(node)) {
-
+                    SelectNodeGroup(node);
                 }
 
                 else{
-
+                    SelectSingle(node);
                 }
             }
         }
         
         public void OnNodeDeselect(BTEditorGraphNode node) {
+
+			if(mSelection_.Remove(node))    node.OnDeselected();
 
         }
 
@@ -231,7 +238,7 @@ namespace TrailsEditor {
             }
             // drag the rest of the tree
             for (int i = 0; i < mSelection_.Count; i++) {
-                mSelection_[i].OnNodeDrag(pos);
+                mSelection_[i].OnDrag(pos);
             }
         }
        
@@ -250,6 +257,7 @@ namespace TrailsEditor {
         //// Branch selects ////
         ////////////////////////
         
+        // Aux de limpieza
         private void ClearSelection() {
             for(int i=0;i<mSelection_.Count;i++){
                // mSelection_[i].OnNodeDeselect();
@@ -262,10 +270,7 @@ namespace TrailsEditor {
             SelectBranchRecursive(WorkingRoot);
         }
         
-        private void SelectNodeGroup(BTEditorGraphNode node){
-            SelectBranch(node);
-            //node.OnNodeSelect();
-        }
+
         private void SelectBranch(BTEditorGraphNode parent){
             ClearSelection();
             SelectBranchRecursive(parent);
@@ -285,16 +290,28 @@ namespace TrailsEditor {
             }
         }
 		
-        
-        private void SelectNode(BTEditorGraphNode node){
-            
+        private void SelectNodeGroup(BTEditorGraphNode node){
+            SelectBranch(node);
+            //node.OnNodeSelect();
         }
         
         private void SelectNodeAdditive(BTEditorGraphNode node){
-            
+            mSelection_.Add(node);
+			//node.OnNodeSelect();
         }
 
+		private void SelectSingle(BTEditorGraphNode node)
+		{
+			ClearSelection();
+			mSelection_.Add(node);
+			//node.OnNodeSelect();
+		}
 
+		private void SelectSingleAdditive(BTEditorGraphNode node)
+		{
+			mSelection_.Add(node);
+			//node.OnNodeSelect();
+		}
 
         public bool IsRoot(BTEditorGraphNode node)
         {
