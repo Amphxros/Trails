@@ -155,11 +155,11 @@ namespace TrailsEditor
             }
         }
 
-        public static BTEditorLayout TreeLayout
+        public static BTEditorTreeLayout TreeLayout
         {
             get
             {
-                return null;
+                return BTEditorTreeLayout.Vertical;
             }
             set
             {

@@ -4,6 +4,7 @@ using UnityEngine;
 
 
 namespace TrailsEditor{
+    // renderiza el fondo de la ventana
     public class BTEditorGrid 
     {
         private Texture mTexture_;

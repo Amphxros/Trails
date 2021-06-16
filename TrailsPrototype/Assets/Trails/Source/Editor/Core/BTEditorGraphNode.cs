@@ -92,15 +92,16 @@ namespace TrailsEditor{
 
 		public void Update()
 		{
-			if(CanUpdateChildren)
+			if(CanUpdateChildren){
 				UpdateChildren();
+			}
 
 			HandleEvents();
 		}
 
 		private void UpdateChildren()
 		{
-			for(int i = mChildren_.Count - 1; i >= 0; i--)
+			for(int i = 0; i < mChildren_.Count; i++)
 			{
 				mChildren_[i].Update();
 			}
@@ -201,6 +202,52 @@ namespace TrailsEditor{
 
 		private void DrawTransitions()
 		{
+			Vector2 size= BTEditorStyle.GetNodeSize(mNode_);
+			Rect pos= new Rect(NodePositon + BTEditorCanvas.Current.Position, size);
+			BTEditorTreeLayout treeLayout= BTEditorStyle.TreeLayout;
+			foreach(var child in mChildren_)
+			{
+				Vector2 cSize= BTEditorStyle.GetNodeSize(child.Node);
+				Rect dest= new Rect(child.Node.Position + BTEditorCanvas.Current.Position, cSize);
+		
+				BehaviourNodeStatus status= child.Node.Status;
+				Color color = BTEditorStyle.GetTransitionColor(status);
+				Vector2 nodeCenter = pos.center;
+				Vector2 childCenter = dest.center;
+
+				switch (treeLayout)
+				{
+					case BTEditorTreeLayout.Vertical:
+					if(Mathf.Approximately(nodeCenter.y, childCenter.y) || Mathf.Approximately(nodeCenter.x, childCenter.x))
+					{
+						
+						BTEditorUtils.DrawLine(nodeCenter, childCenter, color);
+					}
+					else{
+						BTEditorUtils.DrawLine(nodeCenter, nodeCenter + Vector2.up * (childCenter.y - nodeCenter.y) / 2, color);
+
+						BTEditorUtils.DrawLine(nodeCenter + Vector2.up * (childCenter.y - nodeCenter.y) / 2,
+											   childCenter + Vector2.up * (nodeCenter.y - childCenter.y) / 2, color);
+
+						BTEditorUtils.DrawLine(childCenter, childCenter + Vector2.up * (nodeCenter.y - childCenter.y) / 2, color);
+					}
+						break;
+				
+					case BTEditorTreeLayout.Horizontal:
+						Vector2 nodeRight = new Vector2(pos.center.x + cSize.x / 2, pos.center.y);
+						Vector2 nodeLeft = new Vector2(dest.center.x - cSize.x / 2, dest.center.y);
+						BTEditorUtils.DrawBezierCurve(nodeRight, nodeLeft, color);
+						break;
+					default:
+						BTEditorUtils.DrawLine(nodeCenter, childCenter, color);
+						break;
+				}
+				
+
+			
+			}
+
+
 		}
 
 		private void DrawSelf()
@@ -229,8 +276,6 @@ namespace TrailsEditor{
 		{
 		
 		}
-
-
 
 		public void OnSelected()
 		{
