@@ -48,14 +48,10 @@ namespace TrailsEditor{
           if(string.IsNullOrEmpty(name)){
 				throw new System.ArgumentException("Name is null or empty", "name");
           }
+
           else{
-			int startIndex = 0;
-
-			if(name.StartsWith("m", System.StringComparison.InvariantCultureIgnoreCase))
-				startIndex = 1;
-
 			mStringBuilder.Length = 0;
-			for(int i = startIndex; i < name.Length; i++)
+			for(int i = 0; i < name.Length; i++)
 			{
 				if(!char.IsLetterOrDigit(name[i]))
 				{

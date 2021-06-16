@@ -67,6 +67,17 @@ namespace Trails
             }
         }
 
+        
+		public int GetIndex(BehaviourNode node)
+		{
+			for (int i = 0; i < mChildren_.Count; i++)
+			{
+				if (mChildren_[i] == node)
+					return i;
+			}
+			return -1;
+		}
+
         public void InsertChild(int index, BehaviourNode child)
         {
             if (child != null)

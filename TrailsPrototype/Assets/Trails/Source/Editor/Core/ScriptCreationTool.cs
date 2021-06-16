@@ -32,19 +32,19 @@ namespace  TrailsEditor
 				switch(mScript)
 				{
 				case CustomScriptType.Composite:
-					template = Resources.Load<TextAsset>("Trails/Resources/Templates 1/Composite");
+					template = Resources.Load<TextAsset>("Trails/Templates 1/Composite");
 					break;
 				case CustomScriptType.Decorator:
-					template = Resources.Load<TextAsset>("Trails/Resources/Templates 1/Decorator");
+					template = Resources.Load<TextAsset>("Trails/Templates 1/Decorator");
 					break;
 				case CustomScriptType.Action:
-					template = Resources.Load<TextAsset>("Trails/Resources/Templates 1/Action");
+					template = Resources.Load<TextAsset>("Trails/Templates 1/Action");
 					break;
 				case CustomScriptType.Constraint:
-					template = Resources.Load<TextAsset>("Trails/Resources/Templates 1/Constraint");
+					template = Resources.Load<TextAsset>("Trails/Templates 1/Constraint");
 					break;
 				case CustomScriptType.Service:
-					template = Resources.Load<TextAsset>("Trails/Resources/Templates 1/Service");
+					template = Resources.Load<TextAsset>("Trails/Templates 1/Service");
 					break;
 				}
 

@@ -20,10 +20,9 @@ namespace Trails
 
         public BehaviourTree()
         {
-            if (mRoot_ == null)
-            {
-                mRoot_ = new Root();
-            }
+    
+            mRoot_ = new Root();
+        
         }
 
     }

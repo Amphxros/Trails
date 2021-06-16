@@ -9,20 +9,21 @@ using Trails;
 namespace TrailsEditor{
     
     public class BTEditorGraphNode : ScriptableObject {
-   private const int DRAG_MOUSE_BUTTON = 0;
+		private const int DRAG_MOUSE_BUTTON = 0;
 		private const int SELECT_MOUSE_BUTTON = 0;
 		private const int CONTEXT_MOUSE_BUTTON = 1;
-		private const float DOUBLE_CLICK_THRESHOLD = 0.4f;
+		private const float DOUBLE_CLICK_THRESHOLD = 0.2f;
 
 		private List<BTEditorGraphNode> mChildren_;
 		private BehaviourNode mNode_;
 		private BTEditorGraphNode mParent_;
 		private BTEditorGraph mGraph_;
-		private Vector2 m_dragOffset;
-		private float? m_lastClickTime;
+		private Vector2 mDragOffset_;
+		private float mLastClickTime_;
 		private bool mIsSelected_;
-		private bool m_isDragging;
-		private bool m_canBeginDragging;
+		private bool mIsDragging_;
+		private bool mCanBeginDragging_;
+
 		
 		public BehaviourNode Node
 		{
@@ -46,29 +47,28 @@ namespace TrailsEditor{
 
 		public bool IsRoot
 		{
-			get { 
-				
-
-				return mGraph_.IsRoot(this); 
-			}
+			get { return mGraph_.IsRoot(this); }
 		}
 
-		public Vector2 NodePositon
+		public Vector2 NodePosition
 		{
 			get { return mNode_.Position; }
 			set
 			{
 				if(!IsRoot)
 				{
+					//Vector2 offset = value - mNode_.Position;
 					mNode_.Position = value;
+					//UpdateChildrenPosition(offset);
 				}
 			}
 		}
 
 		private bool CanUpdateChildren
 		{
-			get{
-			return !(mNode_ is NodeGroup) || mGraph_.IsRoot(this);
+			get
+			{
+				return !(mNode_ is NodeGroup) || mGraph_.IsRoot(this);
 			}
 		}
 
@@ -76,7 +76,7 @@ namespace TrailsEditor{
 		{
 			get
 			{
-			return !(mNode_ is NodeGroup) || mGraph_.IsRoot(this);
+				return !(mNode_ is NodeGroup) || mGraph_.IsRoot(this);
 			}
 		}
 		
@@ -88,24 +88,24 @@ namespace TrailsEditor{
 			}
 			
 			mIsSelected_ = false;
-			m_isDragging = false;
-			m_canBeginDragging = false;
-			m_dragOffset = Vector2.zero;
-			m_lastClickTime = null;
+			mIsDragging_ = false;
+			mCanBeginDragging_ = false;
+			mDragOffset_ = Vector2.zero;
+			mLastClickTime_ = -1;
+
 		}
 
 		public void Update()
 		{
-			if(CanUpdateChildren){
+			if(CanUpdateChildren)
 				UpdateChildren();
-			}
 
 			HandleEvents();
 		}
 
 		private void UpdateChildren()
 		{
-			for(int i = 0; i < mChildren_.Count; i++)
+			for(int i = mChildren_.Count - 1; i >= 0; i--)
 			{
 				mChildren_[i].Update();
 			}
@@ -113,78 +113,72 @@ namespace TrailsEditor{
 
 		private void HandleEvents()
 		{
-			Rect pos = new Rect(mNode_.Position, BTEditorStyle.GetNodeSize(mNode_));
-			Vector2 mousePos = BTEditorCanvas.Current.WindowSpaceToCanvasSpace(BTEditorCanvas.Current.Event.mousePosition);
+			Rect position = new Rect(NodePosition, BTEditorStyle.GetNodeSize(mNode_));
+			Vector2 mousePosition = BTEditorCanvas.Current.WindowSpaceToCanvasSpace(BTEditorCanvas.Current.Event.mousePosition);
 
-			//click
-			if (BTEditorCanvas.Current.Event.type == EventType.MouseDown && BTEditorCanvas.Current.Event.button == SELECT_MOUSE_BUTTON)
+			if(BTEditorCanvas.Current.Event.type == EventType.MouseDown && BTEditorCanvas.Current.Event.button == SELECT_MOUSE_BUTTON)
 			{
-				if (pos.Contains(mousePos)) {
+				if(position.Contains(mousePosition))
+				{
+					if(!mIsSelected_)
+						mGraph_.OnNodeSelect(this);
 
-					// single click
-					if (!mIsSelected_) mGraph_.OnNodeSelect(this);
-
-					// double click
-					if(m_lastClickTime > 0)
-                    {
-						if (Time.realtimeSinceStartup <= m_lastClickTime + DOUBLE_CLICK_THRESHOLD)
+					if(mLastClickTime_ > 0)
+					{
+						if(Time.realtimeSinceStartup <= mLastClickTime_ + DOUBLE_CLICK_THRESHOLD)
 						{
 							OnDoubleClicked();
 						}
 					}
+					
+					mLastClickTime_ = Time.realtimeSinceStartup;
 
-					m_lastClickTime = Time.realtimeSinceStartup;
-
-					m_canBeginDragging = !IsRoot;
+					mCanBeginDragging_ = !IsRoot;
 					BTEditorCanvas.Current.Event.Use();
 				}
 			}
-			//
-			else if (BTEditorCanvas.Current.Event.type == EventType.MouseDown && BTEditorCanvas.Current.Event.button == CONTEXT_MOUSE_BUTTON)
+			else if(BTEditorCanvas.Current.Event.type == EventType.MouseDown && BTEditorCanvas.Current.Event.button == CONTEXT_MOUSE_BUTTON)
 			{
-				if (pos.Contains(mousePos))
+				if(position.Contains(mousePosition))
 				{
 					ShowContextMenu();
 					BTEditorCanvas.Current.Event.Use();
 				}
 			}
-			//release
-			else if (BTEditorCanvas.Current.Event.type == EventType.MouseUp && BTEditorCanvas.Current.Event.button == SELECT_MOUSE_BUTTON)
+			else if(BTEditorCanvas.Current.Event.type == EventType.MouseUp && BTEditorCanvas.Current.Event.button == SELECT_MOUSE_BUTTON)
 			{
-				if (m_isDragging)
+				if(mIsDragging_)
 				{
 					mGraph_.OnNodeEndDrag(this);
 					BTEditorCanvas.Current.Event.Use();
 				}
-				m_canBeginDragging = false;
+				mCanBeginDragging_ = false;
 			}
-			//drag
-			else if (BTEditorCanvas.Current.Event.type == EventType.MouseDrag && BTEditorCanvas.Current.Event.button == DRAG_MOUSE_BUTTON)
+			else if(BTEditorCanvas.Current.Event.type == EventType.MouseDrag && BTEditorCanvas.Current.Event.button == DRAG_MOUSE_BUTTON)
 			{
-				if (!mGraph_.ReadOnly && !m_isDragging && m_canBeginDragging && pos.Contains(mousePos))
+				if(!mGraph_.ReadOnly && !mIsDragging_ && mCanBeginDragging_ && position.Contains(mousePosition))
 				{
-					mGraph_.OnNodeBeginDrag(this, mousePos);
+					mGraph_.OnNodeBeginDrag(this, mousePosition);
 					BTEditorCanvas.Current.Event.Use();
 				}
-				else if (m_isDragging)
+				else if(mIsDragging_)
 				{
-					mGraph_.OnNodeDrag(this, mousePos);
+					mGraph_.OnNodeDrag(this, mousePosition);
 					BTEditorCanvas.Current.Event.Use();
 				}
 			}
-
-			else if (mGraph_.SelectionBox.HasValue)
+			else if(mGraph_.SelectionBox.HasValue)
 			{
-				if (mGraph_.SelectionBox.Value.Contains(pos.center))
+				if(mGraph_.SelectionBox.Value.Contains(position.center))
 				{
-					if (!mIsSelected_)
+					if(!mIsSelected_)
 					{
 						mGraph_.OnNodeSelect(this);
 					}
 				}
 				else
 				{
-					if (mIsSelected_)
+					if(mIsSelected_)
 					{
 						mGraph_.OnNodeDeselect(this);
 					}
@@ -198,36 +192,52 @@ namespace TrailsEditor{
 				DrawTransitions();
 
 			DrawSelf();
+
 			DrawComment();
+
+			DrawConstraints();
 
 			if(CanDrawChildren)
 				DrawChildren();
 		}
 
+		private BehaviourNodeStatus GetNodeStatus(BehaviourNode node)
+		{
+			BehaviourNodeStatus status = BehaviourNodeStatus.None;
+			
+			return status;
+		}
+
+		private BehaviourNodeStatus GetConstraintResult(BehaviourNode node, int index)
+		{
+			BehaviourNodeStatus status = BehaviourNodeStatus.None;
+		
+			return status;
+		}
+
 		private void DrawTransitions()
 		{
-			Vector2 size= BTEditorStyle.GetNodeSize(mNode_);
-			Rect pos= new Rect(NodePositon + BTEditorCanvas.Current.Position, size);
-			BTEditorTreeLayout treeLayout= BTEditorStyle.TreeLayout;
+			Vector2 nodeSize = BTEditorStyle.GetNodeSize(mNode_);
+			Rect position = new Rect(NodePosition + BTEditorCanvas.Current.Position, nodeSize);
+			BTEditorTreeLayout treeLayout = BTEditorStyle.TreeLayout;
+
 			foreach(var child in mChildren_)
 			{
-				Vector2 cSize= BTEditorStyle.GetNodeSize(child.Node);
-				Rect dest= new Rect(child.Node.Position + BTEditorCanvas.Current.Position, cSize);
-		
-				BehaviourNodeStatus status= child.Node.Status;
-				Color color = BTEditorStyle.GetTransitionColor(status);
-				Vector2 nodeCenter = pos.center;
-				Vector2 childCenter = dest.center;
+				Vector2 childNodeSize = BTEditorStyle.GetNodeSize(child.Node);
+				Rect childPosition = new Rect(child.Node.Position + BTEditorCanvas.Current.Position, childNodeSize);
+				BehaviourNodeStatus childStatus = child.Node.Status;
+				Color color = BTEditorStyle.GetTransitionColor(childStatus);
+				Vector2 nodeCenter = position.center;
+				Vector2 childCenter = childPosition.center;
 
-				switch (treeLayout)
+				if(treeLayout == BTEditorTreeLayout.Vertical)
 				{
-					case BTEditorTreeLayout.Vertical:
 					if(Mathf.Approximately(nodeCenter.y, childCenter.y) || Mathf.Approximately(nodeCenter.x, childCenter.x))
 					{
-						
 						BTEditorUtils.DrawLine(nodeCenter, childCenter, color);
 					}
-					else{
+					else
+					{
 						BTEditorUtils.DrawLine(nodeCenter, nodeCenter + Vector2.up * (childCenter.y - nodeCenter.y) / 2, color);
 
 						BTEditorUtils.DrawLine(nodeCenter + Vector2.up * (childCenter.y - nodeCenter.y) / 2,
@@ -235,50 +245,69 @@ namespace TrailsEditor{
 
 						BTEditorUtils.DrawLine(childCenter, childCenter + Vector2.up * (nodeCenter.y - childCenter.y) / 2, color);
 					}
-						break;
-				
-					case BTEditorTreeLayout.Horizontal:
-						Vector2 nodeRight = new Vector2(pos.center.x + cSize.x / 2, pos.center.y);
-						Vector2 nodeLeft = new Vector2(dest.center.x - cSize.x / 2, dest.center.y);
-						BTEditorUtils.DrawBezierCurve(nodeRight, nodeLeft, color);
-						break;
-					default:
-						BTEditorUtils.DrawLine(nodeCenter, childCenter, color);
-						break;
 				}
-				
-
-			
+				else if(treeLayout == BTEditorTreeLayout.Horizontal)
+				{
+					//BTEditorUtils.DrawBezier(nodeCenter, childCenter, color);
+					Vector2 nodeRight = new Vector2(position.center.x + nodeSize.x / 2, position.center.y);
+					Vector2 childLeft = new Vector2(childPosition.center.x - childNodeSize.x / 2, childPosition.center.y);
+					BTEditorUtils.DrawBezierCurve(nodeRight, childLeft, color);
+				}
+				else
+				{
+					BTEditorUtils.DrawLine(nodeCenter, childCenter, color);
+				}
 			}
-
-
 		}
 
 		private void DrawSelf()
 		{
-			string label="node";
+			string label = string.IsNullOrEmpty(mNode_.Name) ? mNode_.Title : mNode_.Name;
+			BTGraphNodeStyle nodeStyle = BTEditorStyle.GetStyle(mNode_);
+			Vector2 nodeSize = BTEditorStyle.GetNodeSize(mNode_);
+			Rect position = new Rect(mNode_.Position + BTEditorCanvas.Current.Position, nodeSize);
+			BehaviourNodeStatus status =  mNode_.Status;
+
+			GUI.Box(position, BTEditorStyle.ArrowUP);
 			
 
-			BTGraphNodeStyle style = BTEditorStyle.GetStyle(mNode_);
-			Rect pos = new Rect( mNode_.Position + BTEditorCanvas.Current.Position, new Vector2(100,40));
-			BehaviourNodeStatus status = mNode_.Status;
 
-			EditorGUI.LabelField(pos, label, style.GetStyle(status, mIsSelected_));
-		
+			int iconSize = 32;
+			int iconOffsetY = 7;
+			Rect iconPos = new Rect(position.x + (nodeSize.x - iconSize) / 2, position.y + (nodeSize.y - iconSize) / 2 - iconOffsetY, iconSize, iconSize);
+			//GUI.DrawTexture(iconPos, BTEditorStyle.GetNodeIcon(mNode_));
+
+			Rect titlePos = new Rect(position);
+			titlePos.y = titlePos.y - 5;
+
+			// show index of composite's children.
+			if (Parent != null && Parent.Node is Composite)
+			{
+				Composite compNode = Parent.Node as Composite;
+				int index = compNode.GetIndex(mNode_);
+				Rect nodeLeftPos = new Rect(position.x + 2, position.center.y - 8, 20, 16);
+				EditorGUI.LabelField(nodeLeftPos, index.ToString(), EditorStyles.label);
+			}
+
 
 		}
 
 		private void DrawChildren()
 		{
-			foreach( var c in mChildren_){
-				c.Draw();
+			for(int i = 0; i < mChildren_.Count; i++)
+			{
+				mChildren_[i].Draw();
 			}
-			
 		}
 
 		private void DrawComment()
 		{
-		
+			
+		}
+
+		private void DrawConstraints()
+		{
+			
 		}
 
 		public void OnSelected()
@@ -291,7 +320,7 @@ namespace TrailsEditor{
 		public void OnDeselected()
 		{
 			mIsSelected_ = false;
-			m_isDragging = false;
+			mIsDragging_ = false;
 			if(Selection.activeObject == this)
 			{
 				Selection.activeObject = null;
@@ -299,15 +328,15 @@ namespace TrailsEditor{
 			BTEditorCanvas.Current.Repaint();
 		}
 
-		public void OnBeginDrag(Vector2 pos)
+		public void OnBeginDrag(Vector2 position)
 		{
-			m_dragOffset = pos - NodePositon;
-			m_isDragging = true;
+			mDragOffset_ = position - NodePosition;
+			mIsDragging_ = true;
 		}
 
-		public void OnDrag(Vector2 pos)
+		public void OnDrag(Vector2 position)
 		{
-			Vector2 nodePos = pos - m_dragOffset;
+			Vector2 nodePos = position - mDragOffset_;
 			if(BTEditorCanvas.Current.SnapToGrid)
 			{
 				float snapSize = BTEditorCanvas.Current.SnapSize;
@@ -315,50 +344,169 @@ namespace TrailsEditor{
 				nodePos.y = (float)Math.Round(nodePos.y / snapSize) * snapSize;
 			}
 
-			NodePositon = nodePos;
+			NodePosition = nodePos;
 
-			BTEditorCanvas.Current.RecalculateSize(NodePositon);
+			BTEditorCanvas.Current.RecalculateSize(NodePosition);
 			BTEditorCanvas.Current.Repaint();
 		}
 
 		public void OnEndDrag()
 		{
-			m_isDragging = false;
+			mIsDragging_ = false;
+
+			UpdateSiblingNodeIndex();
 		}
 
 		private void OnDoubleClicked()
 		{
-			
+			if(mNode_ is NodeGroup)
+			{
+				if(IsRoot)
+					mGraph_.OnPopNodeGroup();
+				else
+					mGraph_.OnPushNodeGroup(this);
+			}
 		}
-	
+
 		private void SetExistingNode(BehaviourNode node)
 		{
-			
+			DestroyChildren();
+
+			mNode_ = node;
+			mIsSelected_ = false;
+
+			if(node is Composite)
+			{
+				Composite composite = node as Composite;
+				for(int i = 0; i < composite.Count; i++)
+				{
+					BehaviourNode childNode = composite.GetChild(i);
+					BTEditorGraphNode graphNode = BTEditorGraphNode.CreateExistingNode(this, childNode);
+					mChildren_.Add(graphNode);
+				}
+			}
+			else if(node is Decorator)
+			{
+				Decorator decorator = node as Decorator;
+				BehaviourNode childNode = decorator.GetChildren();
+				if(childNode != null)
+				{
+					BTEditorGraphNode graphNode = BTEditorGraphNode.CreateExistingNode(this, childNode);
+					mChildren_.Add(graphNode);
+				}
+			}
 		}
 
 		private void ShowContextMenu()
 		{
-			
+			GenericMenu menu = BTContextMenuFactory.CreateNodeContextMenu(this);
+			menu.DropDown(new Rect(BTEditorCanvas.Current.Event.mousePosition, Vector2.zero));
 		}
 
 		public BTEditorGraphNode OnCreateChild(Type type)
 		{
+			if(type != null)
+			{
+				BehaviourNode node = BTUtils.CreateNode(type);
+				if(node != null)
+				{
+					Vector2 nodeSize = BTEditorStyle.GetNodeSize(mNode_);
+					Vector2 nodePos = NodePosition + nodeSize + new Vector2(50, 0);
+					nodePos.x = Mathf.Max(nodePos.x, 0.0f);
+					nodePos.y = Mathf.Max(nodePos.y, 0.0f);
+
+					// force horizontal
+					nodePos.y = NodePosition.y;
+
+					node.Position = nodePos;
+
+					return OnCreateChild(node);
+				}
+			}
+
 			return null;
 		}
 
 		public BTEditorGraphNode OnCreateChild(BehaviourNode node)
 		{
+			if(node != null && ((mNode_ is Composite) || (mNode_ is Decorator)))
+			{
+				if(mNode_ is Composite)
+				{
+					Composite composite = mNode_ as Composite;
+					composite.AddChild(node);
+				}
+				else if(mNode_ is Decorator)
+				{
+					Decorator decorator = mNode_ as Decorator;
+
+					DestroyChildren();
+					decorator.SetChildren(node);
+				}
+
+				BTEditorGraphNode graphNode = BTEditorGraphNode.CreateExistingNode(this, node);
+				mChildren_.Add(graphNode);
+
+				BTEditorCanvas.Current.RecalculateSize(node.Position);
+				return graphNode;
+			}
+
 			return null;
 		}
 
 		public BTEditorGraphNode OnInsertChild(int index, Type type)
 		{
-		
+			if(type != null)
+			{
+				BehaviourNode node = BTUtils.CreateNode(type);
+				if(node != null)
+				{
+					Vector2 nodeSize = BTEditorStyle.GetNodeSize(mNode_);
+					Vector2 nodePos = NodePosition + nodeSize + new Vector2(50, 0);
+					nodePos.x = Mathf.Max(nodePos.x, 0.0f);
+					nodePos.y = Mathf.Max(nodePos.y, 0.0f);
+
+					// force horizontal
+					nodePos.y = NodePosition.y;
+
+					node.Position = nodePos;
+
+					return OnInsertChild(index, node);
+				}
+			}
+
 			return null;
 		}
 
 		public BTEditorGraphNode OnInsertChild(int index, BehaviourNode node)
 		{
+			if(node != null && ((mNode_ is Composite) || (mNode_ is Decorator)))
+			{
+				BTEditorGraphNode graphNode = null;
+
+				if(mNode_ is Composite)
+				{
+					Composite composite = mNode_ as Composite;
+					composite.InsertChild(index, node);
+
+					graphNode = BTEditorGraphNode.CreateExistingNode(this, node);
+					mChildren_.Insert(index, graphNode);
+				}
+				else if(mNode_ is Decorator)
+				{
+					Decorator decorator = mNode_ as Decorator;
+
+					DestroyChildren();
+					decorator.SetChildren(node);
+
+					graphNode = BTEditorGraphNode.CreateExistingNode(this, node);
+					mChildren_.Add(graphNode);
+				}
+
+				BTEditorCanvas.Current.RecalculateSize(node.Position);
+				return graphNode;
+			}
+
 			return null;
 		}
 
@@ -373,7 +521,11 @@ namespace TrailsEditor{
 
 		public void OnDeleteChild(int index)
 		{
-		
+			BTEditorGraphNode child = GetChild(index);
+			if(child != null)
+			{
+				child.OnDelete();
+			}
 		}
 
 		public int GetChildIndex(BTEditorGraphNode child)
@@ -383,7 +535,9 @@ namespace TrailsEditor{
 
 		public void ChangeChildIndex(int sourceIndex, int destinationIndex)
 		{
-		
+			if(sourceIndex >= 0 && sourceIndex < ChildCount && destinationIndex >= 0 && destinationIndex < ChildCount)
+			{
+			}
 		}
 
 		public BTEditorGraphNode GetChild(int index)
@@ -415,60 +569,85 @@ namespace TrailsEditor{
 
 		private void DestroyChildren()
 		{
-			for(int i=0;i<mChildren_.Count;i++){
-				
+			for(int i = 0; i < mChildren_.Count; i++)
+			{
+				BTEditorGraphNode.DestroyImmediate(mChildren_[i]);
 			}
-			if(mNode_ is Composite){
-				Composite composite = mNode_ as Composite;
-				composite.RemoveAllChildren();
-				}
-			else if(mNode_ is Decorator){
 
-				Decorator decorator = mNode_ as Decorator;
-				decorator.SetChildren(null);
+			if(mNode_ is Composite)
+			{
+				((Composite)mNode_).RemoveAllChildren();
 			}
-	
+			else if(mNode_ is Decorator)
+			{
+				((Decorator)mNode_).SetChildren(null);
+			}
+
+			mChildren_.Clear();
 		}
 
 		private void OnDestroy()
 		{
 			mGraph_.OnNodeDeselect(this);
-			for(int i=0;i<mChildren_.Count;i++){
-				BTEditorGraphNode.DestroyImmediate(mChildren_[i]);
+			foreach(var child in mChildren_)
+			{
+				BTEditorGraphNode.DestroyImmediate(child);
+			}
+		}
+
+		private static int SortSiblingCompare(BehaviourNode n1, BehaviourNode n2)
+		{
+			float y1 = n1.Position.y;
+			float y2 = n2.Position.y;
+			if (y1 > y2)
+				return 1;
+			else if (y1 < y2)
+				return -1;
+			else
+				return 0;
+		}
+
+		private void UpdateSiblingNodeIndex()
+		{
+			if (Parent != null && Parent.Node is Composite)
+			{
+			
 			}
 		}
 
 		private static BTEditorGraphNode CreateEmptyNode()
 		{
-			BTEditorGraphNode node = ScriptableObject.CreateInstance<BTEditorGraphNode>();
-			node.NodePositon= new Vector2(0,0);
-			node.OnCreated();
-			node.hideFlags = HideFlags.HideAndDontSave;
+			BTEditorGraphNode graphNode = ScriptableObject.CreateInstance<BTEditorGraphNode>();
+			graphNode.OnCreated();
+			graphNode.hideFlags = HideFlags.HideAndDontSave;
 
-			return node;
+			return graphNode;
 		}
 
 		private static BTEditorGraphNode CreateExistingNode(BTEditorGraphNode parent, BehaviourNode node)
 		{
-			BTEditorGraphNode gNode = BTEditorGraphNode.CreateEmptyNode();
-			gNode.mParent_ = parent;
-			gNode.mGraph_= parent.Graph;
-			gNode.SetExistingNode(node);
+			BTEditorGraphNode graphNode = BTEditorGraphNode.CreateEmptyNode();
+			graphNode.mParent_ = parent;
+			graphNode.mGraph_ = parent.Graph;
+			graphNode.SetExistingNode(node);
 
-			return gNode;
+			return graphNode;
 		}
 
 		public static BTEditorGraphNode CreateRoot(BTEditorGraph graph, Root node)
 		{
-			if(graph!=null && node != null){
-				BTEditorGraphNode gNode= BTEditorGraphNode.CreateEmptyNode();
-				gNode.mGraph_=graph;
-				gNode.mParent_=null;
-				gNode.SetExistingNode(node);
+			if(graph != null && node != null)
+			{
+				BTEditorGraphNode graphNode = BTEditorGraphNode.CreateEmptyNode();
+				graphNode.mGraph_ = graph;
+				graphNode.mParent_ = null;
+				graphNode.SetExistingNode(node);
 
-				return gNode;
+				return graphNode;
 			}
+
 			return null;
 		}
+
 	}
 }

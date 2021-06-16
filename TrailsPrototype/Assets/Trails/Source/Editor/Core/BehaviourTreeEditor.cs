@@ -138,7 +138,7 @@ namespace TrailsEditor
                 if (mBT_ != null)
                 {
                     mBTAsset_ = asset;
-                    mGraph_.SetBehaviourTree(mBT_);
+                    mGraph_.SetBehaviourTree(mBTAsset_,mBT_);
                     mCanvas_.Area = mBTAsset_.CanvasArea;
 
                 }
