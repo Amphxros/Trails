@@ -46,7 +46,11 @@ namespace TrailsEditor{
 
 		public bool IsRoot
 		{
-			get { return mGraph_.IsRoot(this); }
+			get { 
+				
+
+				return mGraph_.IsRoot(this); 
+			}
 		}
 
 		public Vector2 NodePositon
@@ -326,7 +330,7 @@ namespace TrailsEditor{
 		{
 			
 		}
-
+	
 		private void SetExistingNode(BehaviourNode node)
 		{
 			
@@ -456,16 +460,15 @@ namespace TrailsEditor{
 
 		public static BTEditorGraphNode CreateRoot(BTEditorGraph graph, Root node)
 		{
-			if(graph!=null){
+			if(graph!=null && node != null){
 				BTEditorGraphNode gNode= BTEditorGraphNode.CreateEmptyNode();
 				gNode.mGraph_=graph;
+				gNode.mParent_=null;
 				gNode.SetExistingNode(node);
 
 				return gNode;
 			}
-			else{
-				return null;
-			}
+			return null;
 		}
 	}
 }

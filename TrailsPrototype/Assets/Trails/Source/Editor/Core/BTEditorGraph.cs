@@ -56,15 +56,11 @@ namespace TrailsEditor {
         }
 
         public void SetBehaviourTree(BehaviourTree bT) {
-            if (mMasterRoot_ != null) {
-                return;
-            }
-            else {
 
                 mBehaviourTreeIsReadOnly_ = bT.isReadOnly;
                 mMasterRoot_ = BTEditorGraphNode.CreateRoot(this, bT.Root);
                 mRootStack_.Push(mMasterRoot_);
-            }
+            
         }
 
         public void DrawGUI(Rect dest)
@@ -260,8 +256,10 @@ namespace TrailsEditor {
         // Aux de limpieza
         private void ClearSelection() {
             for(int i=0;i<mSelection_.Count;i++){
-               // mSelection_[i].OnNodeDeselect();
+               mSelection_[i].OnDeselected();
             }
+            
+			mSelection_.Clear();
         }
 
 
@@ -315,6 +313,8 @@ namespace TrailsEditor {
 
         public bool IsRoot(BTEditorGraphNode node)
         {
+            	if (WorkingRoot != null)	Debug.Log("this completo");
+				if (WorkingRoot == null)	Debug.Log("this invalido");
             return node == WorkingRoot;
         }
 
