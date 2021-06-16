@@ -51,6 +51,7 @@ namespace TrailsEditor{
 
           else{
 			mStringBuilder.Length = 0;
+            int startIndex = 0;
 			for(int i = 0; i < name.Length; i++)
 			{
 				if(!char.IsLetterOrDigit(name[i]))

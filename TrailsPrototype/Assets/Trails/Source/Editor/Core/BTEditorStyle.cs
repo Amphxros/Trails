@@ -11,6 +11,9 @@ namespace TrailsEditor
         private static Texture mArrowUP_;
         private static Texture mArrowDOWN_;
         private static Texture mOptionsIcon_;
+        private static Texture bannerRed_;
+        private static Texture bannerOrange_;
+        private static Texture bannerPurple_;
 
 
         private static GUIStyle mHeaderLabel_;
@@ -34,6 +37,27 @@ namespace TrailsEditor
         enum NodeStyles { CompositeStyle, DecoratorStyle, ActionStyle, NodeGroup }
         private static BTGraphNodeStyle[] mStyles_;
 
+        public static Texture bannerRed
+        {
+            get
+            {
+                return bannerRed_;
+            }
+        }
+        public static Texture bannerOrange
+        {
+            get
+            {
+                return bannerOrange_;
+            }
+        }
+        public static Texture bannerPurple
+        {
+            get
+            {
+                return bannerPurple_;
+            }
+        }
         public static Texture ArrowUP
         {
             get
@@ -201,6 +225,18 @@ namespace TrailsEditor
             if (mOptionsIcon_ == null)
             {
                 mOptionsIcon_ = Resources.Load<Texture>("Trails/EditorGUI/options_icon");
+            }
+            if (bannerRed_ == null)
+            {
+                bannerRed_ = Resources.Load<Texture>("Trails/EditorGUI/banner-Red");
+            }
+            if (bannerOrange_ == null)
+            {
+                bannerOrange_ = Resources.Load<Texture>("Trails/EditorGUI/banner-Orange");
+            }
+            if (bannerPurple_ == null)
+            {
+                bannerPurple_ = Resources.Load<Texture>("Trails/EditorGUI/banner-Purple");
 
             }
 

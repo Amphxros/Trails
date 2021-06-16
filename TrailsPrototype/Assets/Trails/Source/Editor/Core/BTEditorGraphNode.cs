@@ -268,14 +268,14 @@ namespace TrailsEditor{
 			Rect position = new Rect(mNode_.Position + BTEditorCanvas.Current.Position, nodeSize);
 			BehaviourNodeStatus status =  mNode_.Status;
 
-			GUI.Box(position, BTEditorStyle.ArrowUP);
+			//GUI.Box(position, BTEditorStyle.bannerPurple);
 			
 
 
 			int iconSize = 32;
 			int iconOffsetY = 7;
 			Rect iconPos = new Rect(position.x + (nodeSize.x - iconSize) / 2, position.y + (nodeSize.y - iconSize) / 2 - iconOffsetY, iconSize, iconSize);
-			//GUI.DrawTexture(iconPos, BTEditorStyle.GetNodeIcon(mNode_));
+			GUI.DrawTexture(position, BTEditorStyle.bannerPurple);
 
 			Rect titlePos = new Rect(position);
 			titlePos.y = titlePos.y - 5;
